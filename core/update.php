@@ -147,7 +147,7 @@ class update {
             return $this->newestVersion;
         }
 
-        $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/vowserdb/releases');
+        $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/journal/releases');
         $data = json_decode($resp, true);
         if (isset($data[0]['name'])) {
             $version = $data[0]['name'];
@@ -174,7 +174,7 @@ class update {
      * @return string Changelog
      */
     public function changelog(): string {
-        $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/vowserdb/releases');
+        $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/journal/releases');
         $data = json_decode($resp, true);
         $changelog = $data[0]['body'];
 
@@ -188,24 +188,23 @@ class update {
      */
     public function update() {
         // Get download URL
-        $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/vowserdb/releases');
+        $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/journal/releases');
         $data = json_decode($resp, true);
         $download = $data[0]['zipball_url'];
 
-        return;
         // Download update
-        // if (file_exists('./update.zip')) {
-        //     unlink('./update.zip');
-        // }
-        // $curl = curl_init();
-        // $file = fopen('update.zip','w+');
-        // curl_setopt($curl, CURLOPT_URL, $download);
-        // curl_setopt($curl, CURLOPT_FILE, $file);
-        // curl_setopt($curl, CURLOPT_TIMEOUT, 5040);
-        // curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        // curl_setopt($curl, CURLOPT_USERAGENT, 'Journal Updater');
-        // curl_exec($curl);
-        // curl_close($curl);
+        if (file_exists('./update.zip')) {
+            unlink('./update.zip');
+        }
+        $curl = curl_init();
+        $file = fopen('update.zip','w+');
+        curl_setopt($curl, CURLOPT_URL, $download);
+        curl_setopt($curl, CURLOPT_FILE, $file);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 5040);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_USERAGENT, 'Journal Updater');
+        curl_exec($curl);
+        curl_close($curl);
 
         // Clear extracted/ folder
         $this->core->component('file')->deleteFolder('extracted/');
