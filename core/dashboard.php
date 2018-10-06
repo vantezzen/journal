@@ -129,6 +129,11 @@ class dashboard {
         $posts = $this->core->component('database')->tableData('posts');
         $posts = array_reverse($posts);
 
+        foreach($posts as $key => $post) {
+            // Apply IntelliFormat formatting
+            $posts[$key]['text'] = $this->core->component('intelliformat')->format($post['text']);
+        }
+
         // Check if is uploading in background or is uploadable
         $settings = $this->core->component('database')->table('settings');
         $uploading = (count($settings->select(['key' => 'uploading'])->selected()) > 0 && $settings->selected()[0]['value'] > (time() - 3600));
