@@ -60,8 +60,10 @@ class intelliformat {
      * Apply intelligent formatting.
      * 
      * This will:
+     *  - Format Code
      *  - Convert links
      *  - Create headings
+     *  - Convert Markdown
      * 
      * @param string $string String to format
      * @return string Formatted string 
@@ -126,9 +128,10 @@ class intelliformat {
             ) {
                 // Check if code formatting is on and line is code
                 if ($this->core->setting('intelliformat_code') == 'no' || !($this->isCode($line))) {
-                    $lines[$num] = '<h3>' . $line . '</h3>';
+                    $lines[$num] = '<h5><b>' . $line . '</b></h5>';
                 }
             }
+            $lastEmpty = false;
         }
         $string = implode("<br />", $lines);
         return $string;
@@ -151,29 +154,24 @@ class intelliformat {
                 continue;
             }
 
-            if ($this->isCode($line)) {
-                // Line is code
-                if ($codeBlock) {
-                    // Code is currently in a block, just add code
-                    $final .= $line;
-                } else {
-                    // No block yet, start new
-                    $final .= '<pre>' . $line;
-                }
+            if ($this->isCode($line) && !$codeBlock) {
+                // Start a code block
                 $codeBlock = true;
-            } else {
-                // Not code
-                if ($codeBlock) {
-                    // Code block has just ended
-                    $codeBlock = false;
-                    $final .= '</pre>';
-                }
-
-                $final .= $line;
+                $final .= '<pre>';
+            } else if (!$this->isCode($line) && $codeBlock) {
+                // End code block
+                $codeBlock = false;
+                $final .= '</pre>';
             }
 
-            $final .= '<br />';
+            $final .= $line . '<br />';
         }
+
+        // End code block if still active
+        if ($codeBlock) {
+            $final .= '</pre>';
+        }
+
         return $final;
     }
 
