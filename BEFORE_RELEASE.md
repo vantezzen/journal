@@ -1,0 +1,2 @@
+- vowserdb -> Joural in updater
+- Updater freigeben

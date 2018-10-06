@@ -1,0 +1,12 @@
+<h1>Home</h1>
+
+{{# post }}
+<h1>{{{ title }}}</h1>
+<p>{{# trimmedText}}150{{/ trimmedText}}</p>
+<a href="{{ path }}">Open post</a>
+<a href="{{ url }}">Absolute URL</a>
+{{/ post }}
+
+{{^ post }}
+<b>There are no posts yet!</b>
+{{/ post }}

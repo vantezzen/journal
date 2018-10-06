@@ -1,0 +1,9 @@
+{
+    "private": true,
+    "scripts": {
+        "watch": "node theme_watch.js"
+    },
+    "dependencies": {
+        "jetty": "^0.2.1"
+    }
+}
