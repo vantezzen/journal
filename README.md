@@ -8,6 +8,12 @@ Table of Contents
 - [Security](#security)
 - [Comments](#comments)
 - [Automatic uploading](#automatic-uploading)
+- [How can I publish my blog on...](#how-can-i-publish-my-blog-on)
+    - [...my (S)FTP server](#my-sftp-server)
+    - [...my AWS S3 Bucket/DigitalOcean Spaces](#my-aws-s3-bucketdigitalocean-spaces)
+    - [...Netlify](#netlify)
+    - [...GitHub Pages](#github-pages)
+    - [...Dropbox or my WebDAV server](#dropbox-or-my-webdav-server)
 - [Custom themes](#custom-themes)
         - [base.html](#basehtml)
         - [home.html](#homehtml)
@@ -64,6 +70,24 @@ Journal currently supports the following upload methods:
 - DigitalOcean Spaces
 
 You should now see a "Upload files to server" button on your "Posts" page. When clicked, Journal will upload your current static files to your server, overwriting the old ones but not deleting any other files.
+
+# How can I publish my blog on...
+After creating your blog you can publish it using different methods - here are the most common ones:
+## ...my (S)FTP server
+Journal supports automatic uploading to (S)FTP servers. You can activate it in Journals' settings under "Upload"
+
+## ...my AWS S3 Bucket/DigitalOcean Spaces
+Journal supports automatic uploading to both AWS S3 Buckets and DigitalOcean Spaces. You can activate it in Journals' settings under "Upload"
+
+## ...Netlify
+Unfortunately, Journal does not support Netlify by default. You can however create a new git repository in Journals' `public/` directory and manually commit and push changes to your blog - changes should only happen when your change Journals' settings or create or edit post.
+You can now choose this git repository as your Netlify repository
+
+## ...GitHub Pages
+See [How can I publish my blog on Netlify](#netlify)
+
+## ...Dropbox or my WebDAV server
+Dropbox and WebDAV support will be added in one of the next versions of Journal
 
 # Custom themes
 Journal allows for the creation of custom themes. It utilizes [Mustache](https://mustache.github.io/) to turn themes into pages. To see an example theme, look at `themes/default/`.
