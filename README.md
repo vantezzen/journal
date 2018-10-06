@@ -60,6 +60,7 @@ Please note that these warning do not apply to the final static files stored in 
 # Official themes
 - default (build-in, very simple theme to get developers started)
 - [clean_blog](https://github.com/vantezzen/journal-cleanblog)
+- [gin](https://github.com/vantezzen/journal-gin)
 
 # Comments
 Journal allows you to add a Disqus comment section to every post. To activate comments, in your Journal dashboard, go to "Comments", as the Provider select "Disqus". You then need to get the identifier of your Disqus admin account (`my-blog-6`.disqus.com). After saving, the comments section shoud appear at the end of your post.
