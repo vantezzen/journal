@@ -8,6 +8,7 @@ Table of Contents
 - [Security](#security)
 - [Comments](#comments)
 - [Automatic uploading](#automatic-uploading)
+- [IntelliFormat](#intelliformat)
 - [How can I publish my blog on...](#how-can-i-publish-my-blog-on)
     - [...my (S)FTP server, AWS S3 Bucket or DigitalOcean Spaces](#my-sftp-server-aws-s3-bucket-or-digitalocean-spaces)
     - [...Netlify](#netlify)
@@ -23,7 +24,7 @@ Table of Contents
 - [License](#license)
 
 # About Journal
-Journal is a simple CMS for static blogs. It aims to simplify the creation and maintenance of a blog that only uses static html, js and css files.
+Journal is a simple CMS for static blogs. It aims to simplify the creation and maintenance of blogs, letting the author focus on writing posts instead of wasting time on the CMS.
 
 # Features
 - Simple, minimalistic dashboard
@@ -32,6 +33,7 @@ Journal is a simple CMS for static blogs. It aims to simplify the creation and m
 - [Automatic upload of static blog files to server](#automatic-uploading)
 - No SQL-/Database-Server required
 - [Comment support through Disqus](#comments)
+- [Intelligent post formatting](#intelliformat)
 - Custom theme support
 - Easy theme developement through [theme watcher](#theme-watcher)
 - Build-in updater
@@ -69,6 +71,16 @@ Journal currently supports the following upload methods:
 - DigitalOcean Spaces
 
 You should now see a "Upload files to server" button on your "Posts" page. When clicked, Journal will upload your current static files to your server, overwriting the old ones but not deleting any other files.
+
+# IntelliFormat
+Journal uses a system called `IntelliFormat` to apply different formatting methods to the posts.
+These formatting methods are:
+- Links: Automatically convert Links into clickable HTML-Links
+- Headings: Automatically find headings and make them bigger
+- Markdown: Convert Markdown formatting to HTML
+The goal of IntelliFormats' formatting methods (except Markdown) is to intelligentely and automatically apply formatting to posts without the user having to add them. This is why - by default - IntelliFormats' Markdown formatter is disabled.
+
+All formatting methods can be enabled and disabled through Settings > Format
 
 # How can I publish my blog on...
 After creating your blog you can publish it using different methods - here are the most common ones:

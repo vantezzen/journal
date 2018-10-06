@@ -54,6 +54,7 @@ class pages {
         foreach($posts as $key => $post) {
             $posts[$key]['path'] = $this->core->component('url')->get($post);
             $posts[$key]['url'] = $this->core->component('url')->getFull($post);
+            $posts[$key]['text'] = $this->core->component('intelliformat')->format($post['text']);
             $posts[$key]['trimmedText'] = function($length) use ($post) {
                 $length = trim($length);
                 if (strlen($post['text']) > $length) {
@@ -85,6 +86,8 @@ class pages {
      */
     public function post(array $post): string {
         $template = $this->core->component('generator')->getFile('post');
+
+        $post['text'] = $this->core->component('intelliformat')->format($post['text']);
 
         // Collect data for render
         $data = array_merge($post, [

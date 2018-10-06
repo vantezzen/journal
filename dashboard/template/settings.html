@@ -7,8 +7,12 @@
     </div>
 </div>
 {{/ update }}
+<p>Sections: <a href="#general">Journal</a> | <a href="#blog">Blog</a> | <a href="#comments">Comments</a> | <a href="#upload">Upload</a></p>
 <form action="{{ page_url }}/settings" method="post">
-    <h3>Journal</h3>
+    <button type="submit" class="btn btn-block btn-outline-dark submit-btn"><span class="icon-check"></span> Save</button>
+    <small class="form-text text-muted">Saving will regenerate your static pages. This might take a few seconds.</small>
+
+    <h3 id="general">Journal</h3>
     <p class="text-muted">Settings abut your Journal installation.</p>
     <div class="form-group">
         <label for="search_updates">Search for updates</label>
@@ -18,7 +22,41 @@
         </select>
         <small class="form-text text-muted">By default, Journal searches for updates on page load. If a new update exists a red dot next to "Settings" in the sidebar will appear - this can increase page load time. You can search for updates manually by going to "Search for updates" in the settings even after disabling automatic search.</small>
     </div>
-    <h3>Blog</h3>
+    <h5>Format</h5>
+    <p>Journal uses different formatters to intelligentely and automatically format your text. You can disable formatters if you want to.</p>
+    <div class="form-group">
+        <label for="intelliformat_links">Links</label>
+        <select class="form-control" name="intelliformat_links" id="intelliformat_links" data-placeholder="Choose..." data-value="{{ intelliformat_links }}">
+            <option value="yes">Enable</option>
+            <option value="no">Disable</option>
+        </select>
+        <small class="form-text text-muted">Links will search for links to other pages in your text and turn them into clickable links. If disabled, all your links will not be clickable.</small>
+    </div>
+    <div class="form-group">
+        <label for="intelliformat_markdown">Markdown</label>
+        <select class="form-control" name="intelliformat_markdown" id="intelliformat_markdown" data-placeholder="Choose..." data-value="{{ intelliformat_markdown }}">
+            <option value="yes">Enable</option>
+            <option value="no" selected>Disable</option>
+        </select>
+        <small class="form-text text-muted">Markdown will convert <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown</a> to HTML. If disabled, no markdown will be converted. If you do not use Markdown, it is adviced to disable it.</small>
+    </div>
+    <div class="form-group">
+        <label for="intelliformat_headings">Headings</label>
+        <select class="form-control" name="intelliformat_headings" id="intelliformat_headings" data-placeholder="Choose..." data-value="{{ intelliformat_headings }}">
+            <option value="yes">Enable</option>
+            <option value="no">Disable</option>
+        </select>
+        <small class="form-text text-muted">Heading will search for possible headings in your text an make them bigger.</small>
+    </div>
+    <div class="form-group">
+        <label for="intelliformat_code">Code</label>
+        <select class="form-control" name="intelliformat_code" id="intelliformat_code" data-placeholder="Choose..." data-value="{{ intelliformat_code }}">
+            <option value="yes">Enable</option>
+            <option value="no" selected>Disable</option>
+        </select>
+        <small class="form-text text-muted">Code will search for programming code in your post and format it accordingly. You should only enable this if you plan on adding code to your posts.</small>
+    </div>
+    <h3 id="blog">Blog</h3>
     <p class="text-muted">Settings abut your Journal blog.</p>
     <div class="form-group">
         <label for="title">Title</label>
@@ -138,7 +176,7 @@
     </div>
 
 
-    <h3>Comments</h3>
+    <h3 id="comments">Comments</h3>
     <p class="text-muted">You can allow visitors on your site to comment on posts. As your blog pages are static you'll want to use a third-party provider to manage comments for you.</p>
     <div class="form-group">
         <label for="comments_provider">Provider</label>
@@ -158,7 +196,7 @@
         </small>
     </div>
 
-    <h3>Upload</h3>
+    <h3 id="upload">Upload</h3>
     <p class="text-muted">You can allow Journal access to your webserver so it can automatically upload you blog files to your server.</p>
     <div class="form-group">
         <label for="upload_uploader">Upload method</label>
@@ -221,7 +259,7 @@
         </small>
     </div>
 
-    <button type="submit" class="btn btn-block btn-outline-dark" id="submit-btn"><span class="icon-check"></span> Save</button>
+    <button type="submit" class="btn btn-block btn-outline-dark submit-btn"><span class="icon-check"></span> Save</button>
     <small class="form-text text-muted">Saving will regenerate your static pages. This might take a few seconds.</small>
 </form>
 <a href="{{ page_url }}/update" class="btn btn-block btn-outline-dark mt-4"><span class="icon-rocket"></span> Search for updates</a>
@@ -245,12 +283,17 @@ document.addEventListener('DOMContentLoaded', function() {
     selectValue($('#comments_provider'));
     selectValue($('#upload_uploader'));
     selectValue($('#search_updates'));
+    selectValue($('#intelliformat_links'));
+    selectValue($('#intelliformat_markdown'));
+    selectValue($('#intelliformat_headings'));
+    selectValue($('#intelliformat_code'));
 
     function disable() {
-        $(this).prop('disabled', true);
+        $('.submit-btn').prop('disabled', true);
+        $('.btn').prop('disabled', true);
         return true;
     }
-    $('#submit-btn').click(disable);
+    $('.submit-btn').click(disable);
     $('#regen-btn').click(disable);
 }, false);
 </script>

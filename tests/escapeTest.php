@@ -26,7 +26,7 @@ This > is a  Test &&&&
 
 This is a test © ¢ <script></script>
 EOL;
-    protected static $escaped = "This &gt; is a  Test &amp;&amp;&amp;&amp;<br /><br />This is a test &copy; &cent; &lt;script&gt;&lt;/script&gt;";
+    protected static $escaped = "This &gt; is a  Test &amp;&amp;&amp;&amp;<br /><br />This is a test © ¢ &lt;script&gt;&lt;/script&gt;";
 
     public static function setUpBeforeClass() {
         // Set up core

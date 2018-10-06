@@ -28,6 +28,7 @@ use core\comments;
 use core\update;
 use core\file;
 use core\upload;
+use core\intelliformat;
 
 use core\uploaders\ftp;
 use core\uploaders\sftp;
@@ -48,6 +49,7 @@ new escape($core);
 new comments($core);
 new update($core);
 new file($core);
+new intelliformat($core);
 new upload($core);
 
 // Uploaders

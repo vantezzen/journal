@@ -147,12 +147,9 @@ $app->post('/settings[/]', function($request, $response, $args) use ($core) {
     }
     $db->save();
 
-    // Regenerate static files
-    $core->component('convert')->all();
-
-    // Redirect back to settings page
+    // Redirect to generate page to regenerate pages
     $url = $request->getUri()->getBaseUrl();
-    return $response->withHeader('Location', $url . '/settings');
+    return $response->withHeader('Location', $url . '/generate');
 });
 
 
