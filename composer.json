@@ -1,6 +1,6 @@
 {
     "name": "vantezzen/journal",
-    "description": "Journal allows you to create a blog using static files.",
+    "description": "Journal is a simple CMS for static blogs. It aims to simplify the creation and maintenance of a blog that only uses static html, js and css files.",
     "version": "1.0.0",
     "type": "project",
     "require": {
