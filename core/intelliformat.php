@@ -101,7 +101,9 @@ class intelliformat {
      * @return string Formatted string
      */
     public function formatMarkdown(string $string): string {
-        return $this->parsedown->line($string);
+        $string = $this->core->component('escape')->unescape($string); // Decode HTML so Parsedown can understand it
+        $parsed = $this->parsedown->text($string);
+        return $parsed;
     }
 
     /**

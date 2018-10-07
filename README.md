@@ -9,6 +9,7 @@ Table of Contents
 - [Comments](#comments)
 - [Automatic uploading](#automatic-uploading)
 - [IntelliFormat](#intelliformat)
+- [Markdown support](#markdown-support)
 - [How can I publish my blog on...](#how-can-i-publish-my-blog-on)
     - [...my (S)FTP server, AWS S3 Bucket or DigitalOcean Spaces](#my-sftp-server-aws-s3-bucket-or-digitalocean-spaces)
     - [...Netlify](#netlify)
@@ -20,6 +21,7 @@ Table of Contents
         - [post.html](#posthtml)
         - [assets/](#assets)
     - [Theme watcher](#theme-watcher)
+- [Backing up](#backing-up)
 - [Upcomming features](#upcomming-features)
 - [License](#license)
 
@@ -33,6 +35,7 @@ Journal is a simple CMS for static blogs. It aims to simplify the creation and m
 - No SQL-/Database-Server required
 - [Comment support through Disqus](#comments)
 - [Intelligent post formatting](#intelliformat)
+- [Markdown support](#markdown-support)
 - Custom theme support
 - Easy theme developement through [theme watcher](#theme-watcher)
 - Build-in updater
@@ -80,7 +83,10 @@ These formatting methods are:
 
 The goal of IntelliFormats formatting methods (except Markdown) is to intelligentely and automatically apply formatting to posts without the user having to add them. This is why - by default - IntelliFormats Markdown formatter is disabled.
 
-All formatting methods can be enabled and disabled through Settings > Format
+All formatting methods can be enabled and disabled through Settings > Formatting
+
+# Markdown support
+Journal supports Markdown through the PHP library [parsedown](https://github.com/erusev/parsedown). Markdown formatting needs to be enabled first through Settings > Formatting > Markdown. When enabling Markdown it is highly recommended to disable all other [IntelliFormat](#intelliformat) formatters as they can interfere with the Markdown formatting.
 
 # How can I publish my blog on...
 After creating your blog you can publish it using different methods - here are the most common ones:
@@ -220,12 +226,14 @@ replacing `[theme name]` with the name of your themes folder.
 
 Theme watcher will now watch your folder and trigger a regeneration when a file changes. It is not required to change Journals theme to the developed theme - it will automatically be used for regeneration of static files when using the theme watcher.
 
+# Backing up
+Backuping up Journal is easy: Simply backup Journals `tables/`, `public/` and `themes/` folder. If something goes wrong, redownload Journal in the version you had installed and restore your backed-up folders.
+
 # Upcomming features
 These features are planned for the next versions of Journal
 - Menu settings for themes (=> Add custom links to menus)
-- More upload methods (ZIP Archive, WebDAV, Git)
+- More upload methods (ZIP Archive, WebDAV)
 - Pagination support
 
 # License
-
 Journal is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
