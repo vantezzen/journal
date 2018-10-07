@@ -265,6 +265,11 @@ class dashboard {
         } else {
             $data['update'] = false;
         }
+
+        // Check if is uploading in background or is uploadable
+        $settings = $this->core->component('database')->table('settings');
+        $data['uploading'] = (count($settings->select(['key' => 'uploading'])->selected()) > 0 && $settings->selected()[0]['value'] > (time() - 3600));
+        $data['uploadable'] = ($this->core->setting('upload_uploader') !== 0 && !$data['uploading']);
         
         $render = $this->render($template, $data);
         $page = $this->applyBase($render, $url);

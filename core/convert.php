@@ -90,6 +90,7 @@ class convert {
 
         // Generate info.json
         $info = [
+            'generator' => 'Journal',
             'last_update' => time(),
             'files' => $files
         ];

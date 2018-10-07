@@ -68,7 +68,7 @@ abstract class Uploader implements UploaderInterface {
      * This method should also able to overwrite the file if it already exists, e.g. by deleting beforehand
      * 
      * @param string $content Content of the file being uploaded
-     * @param string $path Relative path to the file
+     * @param string $path Path to the file
      * @return void
      */
     public function upload(string $content, string $path) {
@@ -84,12 +84,22 @@ abstract class Uploader implements UploaderInterface {
      * 
      * This method should be able to handle if the given file does not exist
      * 
-     * @param string $path Absolute path to the file
+     * @param string $path Path to the file
      * @return void
      */
     public function delete(string $path) {
         if ($this->filesystem->has($path)) {
             $this->filesystem->delete($path);
         }
+    }
+
+    /**
+     * Information about if the filesystem contains a given file
+     * 
+     * @param string $path Path to the file
+     * @return bool If the file exists
+     */
+    public function has(string $path): bool {
+        return $this->filesystem->has($path);
     }
 }

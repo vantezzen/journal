@@ -63,4 +63,53 @@ class upload {
             $filesystem->upload($content, $path);
         }
     }
+
+    /**
+     * Uploads a single post to the server
+     * 
+     * @param array $post Post to upload
+     * @return void
+     */
+    public function post(array $post) {
+        // Check if an uploader has been chosen
+        if ($this->core->setting('upload_uploader') === 0) {
+            return;
+        }
+
+        // Get and setup filesystem
+        $filesystem = $this->core->component('uploader:' . $this->core->setting('upload_uploader'));
+        $filesystem->setup();
+
+        // Upload post
+        $file = $this->core->component('url')->get($post);
+        $content = file_get_contents('public/' . $file);
+        $filesystem->upload($content, $file);
+
+        // Upload home
+        $content = file_get_contents('public/index.html');
+        $filesystem->upload($content, 'index.html');
+
+        // Upload info.json
+        $content = file_get_contents('public/info.json');
+        $filesystem->upload($content, 'info.json');
+    }
+
+    /**
+     * Check if the server has the blog uploaded to it
+     * 
+     * @return bool If server has blog on it
+     */
+    public function serverHasBlog() {
+        // Check if an uploader has been chosen
+        if ($this->core->setting('upload_uploader') === 0) {
+            return true;
+        }
+
+        // Get and setup filesystem
+        $filesystem = $this->core->component('uploader:' . $this->core->setting('upload_uploader'));
+        $filesystem->setup();
+
+        // Check if info.json exists
+        return $filesystem->has('info.json');
+    }
 }

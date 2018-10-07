@@ -31,6 +31,9 @@ $core->component('database')->table('settings')->insert([
 ])->save();
 
 // Regenerate static files
+$core->component('convert')->all();
+
+// Upload static files
 $core->component('upload')->upload();
 
 $core->component('database')->table('settings')->select(['key' => 'uploading'])->delete()->save();

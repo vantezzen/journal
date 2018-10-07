@@ -90,6 +90,9 @@ $app->post('/save[/]', function($request, $response, $args) use ($core) {
     // Regenerate static files
     $core->component('convert')->all();
 
+    // Upload to server
+    $core->component('upload')->post($data);
+
     // Redirect to edit page
     $url = $request->getUri()->getBaseUrl();
     return $response->withHeader('Location', $url . '/write/' . $id);
@@ -135,6 +138,7 @@ $app->post('/settings[/]', function($request, $response, $args) use ($core) {
     $data = $request->getParsedBody();
 
     $db = $core->component('database')->table('settings');
+    $oldsettings = $core->settings;
 
     // Update settings table with new data
     foreach($data as $key => $value) {
@@ -146,10 +150,25 @@ $app->post('/settings[/]', function($request, $response, $args) use ($core) {
         }
     }
     $db->save();
+    
+    // Reload settings
+    $core->component('database')->loadSettings();
 
-    // Redirect to generate page to regenerate pages
-    $url = $request->getUri()->getBaseUrl();
-    return $response->withHeader('Location', $url . '/generate');
+    // Check if need to upload blog
+    if (
+        $core->setting('upload_uploader') !== 0 &&      // Uploader specified
+        (!$core->component('upload')->serverHasBlog()  // Server doesn't have blog on it
+        || (!isset($oldsettings['theme']) && $data['theme'] !== 'default') // Theme has been set initially
+        || (isset($oldsettings['theme']) && $oldsettings['theme'] !== $data['theme'])) // Theme has been changed
+    ) {
+        // Redirect to upload blog
+        $url = $request->getUri()->getBaseUrl();
+        return $response->withHeader('Location', $url . '/perform_upload.php');
+    } else {
+        // Redirect to generate page to regenerate pages
+        $url = $request->getUri()->getBaseUrl();
+        return $response->withHeader('Location', $url . '/generate');
+    }
 });
 
 

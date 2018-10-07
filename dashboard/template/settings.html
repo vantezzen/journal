@@ -198,7 +198,7 @@
     </div>
 
     <h3 class="mt-4" id="upload">Upload</h3>
-    <p class="text-muted">You can allow Journal access to your webserver so it can automatically upload you blog files to your server.</p>
+    <p class="text-muted">You can allow Journal access to your webserver so it can automatically upload your blog files to your server.</p>
     <div class="form-group">
         <label for="upload_uploader">Upload method</label>
         <select class="form-control" name="upload_uploader" id="upload_uploader" data-placeholder="Choose an upload type..." data-value="{{ upload_uploader }}">
@@ -268,6 +268,17 @@
 
 <a href="{{ page_url }}/generate" class="btn btn-block btn-outline-dark mt-4" id="regen-btn"><span class="icon-chemistry"></span> Force static page regeneration</a>
 <small class="form-text text-muted">Static pages will be automatically regenerated when you save a post. You only need to use this when you changed files.</small>
+
+
+{{# uploadable }}
+<a href="{{ page_url }}/perform_upload.php" class="btn btn-block btn-outline-dark mt-4"><span class="icon-cloud-upload"></span> Upload files to server</a>
+<small class="form-text text-muted">Journal will re-upload all your files to the specified server in the background.</small>
+{{/ uploadable }}
+{{# uploading }}
+<button disabled class="btn btn-block btn-outline-dark mt-4"><span class="icon-cloud-upload"></span> Upload files to server</button>
+<small class="form-text text-muted">Journal is currently uploading your files. Please wait until it has finished uploading before starting a new upload.</small>
+
+{{/ uploading }}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

@@ -80,7 +80,7 @@ class database {
      * 
      * @return void
      */
-    private function loadSettings(): void {
+    public function loadSettings(): void {
         $data = $this->tables['settings']->data();
         $settings = [];
 

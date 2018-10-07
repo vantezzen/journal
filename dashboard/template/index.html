@@ -1,10 +1,7 @@
 <div class="container-fluid">
-    {{# uploadable }}
-    <a href="{{ url }}/perform_upload.php" class="btn btn-block btn-dark"><span class="icon-cloud-upload"></span> Upload files to server</a>
-    {{/ uploadable }}
     {{# uploading }}
     <div class="alert alert-secondary" role="alert">
-        <span class="icon-info"></span> Uploading files to server in the background - this might take a few minutes but you can continue using Journal in that time. This message will dissapear as soon as uploading is done.
+        <span class="icon-info"></span> Journal is currently uploading files to your server in the background - this might take a few minutes but you can continue using Journal in that time. This message will dissapear as soon as uploading is done.
     </div>
     {{/ uploading }}
     {{# post }}
