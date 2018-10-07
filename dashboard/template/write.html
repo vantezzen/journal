@@ -14,13 +14,34 @@
 </div>
 <footer class="footer">
     <div class="container float-right">
-        <button class="btn btn-outline-success">Save</button>
+        <button class="btn btn-outline-success" id="save-btn">Save</button>
         </form>
         {{# edit }}
-            <button class="btn btn-outline-danger" data-toggle="modal" data-target="#delete">Delete post</button>
+            <button class="btn btn-outline-danger" id="delete-btn" data-toggle="modal" data-target="#delete">Delete post</button>
         {{/ edit }}
     </div>
 </footer>
+<script>
+// Lock inputs on save and delete
+document.addEventListener('DOMContentLoaded', function() {
+    $('#save-btn').click(function() {
+        $('#confirm-delete').prop('disabled', true);
+        $('#save-btn').prop('disabled', true);
+        $('#delete-btn').prop('disabled', true);
+        $('#text').prop('readonly', true);
+        $('#title').prop('readonly', true);
+        return true;
+    });
+    $('#confirm-delete').click(function() {
+        $('#confirm-delete').prop('disabled', true);
+        $('#save-btn').prop('disabled', true);
+        $('#delete-btn').prop('disabled', true);
+        $('#text').prop('readonly', true);
+        $('#title').prop('readonly', true);
+        return true;
+    });
+});
+</script>
 
 <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="deleteTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -38,7 +59,7 @@
             <button type="button" class="btn btn-outline-success" data-dismiss="modal">Cancel</button>
             <form action="{{ url }}/delete" method="post">
                 <input type="hidden" name="delete" value="{{ id }}">
-                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                <button type="submit" class="btn btn-outline-danger" id="confirm-delete">Delete</button>
             </form>
         </div>
         </div>
