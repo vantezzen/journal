@@ -28,7 +28,6 @@ Journal is a simple CMS for static blogs. It aims to simplify the creation and m
 
 # Features
 - Simple, minimalistic dashboard
-- Easy-to-use dashboard
 - Easy installation
 - [Automatic upload of static blog files to server](#automatic-uploading)
 - No SQL-/Database-Server required
@@ -78,7 +77,8 @@ These formatting methods are:
 - Links: Automatically convert Links into clickable HTML-Links
 - Headings: Automatically find headings and make them bigger
 - Markdown: Convert Markdown formatting to HTML
-The goal of IntelliFormats' formatting methods (except Markdown) is to intelligentely and automatically apply formatting to posts without the user having to add them. This is why - by default - IntelliFormats' Markdown formatter is disabled.
+
+The goal of IntelliFormats formatting methods (except Markdown) is to intelligentely and automatically apply formatting to posts without the user having to add them. This is why - by default - IntelliFormats Markdown formatter is disabled.
 
 All formatting methods can be enabled and disabled through Settings > Format
 
@@ -104,7 +104,7 @@ Every theme has its own folder in `themes/` with its name. It is highly adviced 
 Journal requires the following files and folders to be existent in a themes folder:
 
 ### base.html
-This files holds a scaffold and will be wrapped around every other page. Journal will also require you to have a '{{{ content }}}' tag in your base.html in which other pages will be inserted. 
+This file holds a scaffold and will be wrapped around every other page. Journal will also require you to have a '{{{ content }}}' tag in your base.html in which other pages will be inserted. 
 Availible variables are:
 - content : Code for the page that will be inserted
 - title : Title of the page
@@ -150,10 +150,10 @@ Availible variables are:
 
 Inside `post` you can use:
 - title : Title of the post. This should always be inserted using triple-brackets as the title has already been escaped
-- text : Full post text.This should always be inserted using triple-brackets as the title has already been escaped
+- text : Full post text.This should always be inserted using triple-brackets as the text has already been escaped
 - `trimmedText` method : Only get a trimmed text of sepecified length (see example)
 - path : Relative path to the post (e.g. my-post.html)
-- url : Absolute URL to the psot (e.g. https://example.com/my-post.html)
+- url : Absolute URL to the post (e.g. https://example.com/my-post.html)
 - id : ID of the post
 
 Example home.html
