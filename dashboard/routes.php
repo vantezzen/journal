@@ -104,15 +104,22 @@ $app->post('/delete[/]', function($request, $response, $args) use ($core) {
 
     $id = $data['delete'];
 
-    $core
+    $post = $core
         ->component('database')
         ->table('posts')
         ->select(['id' => $id])
+        ->selected()[0];
+    $core
+        ->component('database')
+        ->table('posts')
         ->delete()
         ->save();
 
     // Regenerate static files
     $core->component('convert')->all();
+
+    // Update server
+    $core->component('upload')->delete($post);
 
     // Redirect to homepage
     $url = $request->getUri()->getBaseUrl();

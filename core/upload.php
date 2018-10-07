@@ -95,6 +95,35 @@ class upload {
     }
 
     /**
+     * Deletes a single post from the server
+     * 
+     * @param array $post Post to delete
+     * @return void
+     */
+    public function delete(array $post) {
+        // Check if an uploader has been chosen
+        if ($this->core->setting('upload_uploader') === 0) {
+            return;
+        }
+
+        // Get and setup filesystem
+        $filesystem = $this->core->component('uploader:' . $this->core->setting('upload_uploader'));
+        $filesystem->setup();
+
+        // Delete post
+        $file = $this->core->component('url')->get($post);
+        $filesystem->delete($file);
+
+        // Upload home
+        $content = file_get_contents('public/index.html');
+        $filesystem->upload($content, 'index.html');
+
+        // Upload info.json
+        $content = file_get_contents('public/info.json');
+        $filesystem->upload($content, 'info.json');
+    }
+
+    /**
      * Check if the server has the blog uploaded to it
      * 
      * @return bool If server has blog on it
