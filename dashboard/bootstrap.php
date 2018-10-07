@@ -57,9 +57,3 @@ new ftp($core);
 new sftp($core);
 new s3($core);
 new dospaces($core);
-
-foreach(glob('extensions/*.php') as $extension) {
-    $class_name = str_replace('.php', '', basename($extension));
-    include $extension;
-    new $class_name($core);
-}
