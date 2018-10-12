@@ -99,6 +99,7 @@ class generator {
             'copyright' => $this->core->setting('copyright'),
             'language' => $this->core->setting('language'),
             'url' => $this->core->setting('url'),
+            'menu' => $this->core->component('database')->tableData('menu'),
             'content' => $content,
             'include' => function($file) use ($content) {
                 $template = $this->getFile(trim($file));
