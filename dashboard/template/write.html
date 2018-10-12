@@ -21,6 +21,14 @@
         {{/ edit }}
     </div>
 </footer>
+<div id="saving_screen">
+    <div id="saving_content">
+        <div class="icon-pencil"></div>
+        <h3 class="mt-4">Saving...</h3>
+    </div>
+</div>
+
+
 <script>
 // Lock inputs on save and delete
 document.addEventListener('DOMContentLoaded', function() {
@@ -30,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
         $('#delete-btn').prop('disabled', true);
         $('#text').prop('readonly', true);
         $('#title').prop('readonly', true);
+
+        $('#saving_screen').css('display', 'flex');
+
         return true;
     });
     $('#confirm-delete').click(function() {
