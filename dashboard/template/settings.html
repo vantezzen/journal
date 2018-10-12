@@ -175,6 +175,19 @@
         </select>
         <small class="form-text text-muted">You can install new themes by dragging them into the themes/ folder</small>
     </div>
+    <div class="form-group">
+        <label for="pagination">Pagination</label>
+        <select class="form-control" name="pagination" id="pagination" data-placeholder="Choose..." data-value="{{ pagination }}">
+            <option value="yes">Enable</option>
+            <option value="no">Disable</option>
+        </select>
+        <small class="form-text text-muted">Pagination will split your homepage into multiple pages. This should be enabled if you have many posts to make your homepage less long.</small>
+    </div>
+    <div class="form-group">
+        <label for="pagination_steps">Pagination steps</label>
+        <input type="number" class="form-control" id="pagination_steps" name="pagination_steps" placeholder="20" value="{{ pagination_steps }}">
+        <small class="form-text text-muted">Blog posts per pagination page. Pagination needs to be enabled first.</small>
+    </div>
 
 
     <h3 class="mt-4" id="comments">Comments</h3>

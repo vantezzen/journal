@@ -10,3 +10,13 @@
 {{^ post }}
 <b>There are no posts yet!</b>
 {{/ post }}
+
+{{# pagination }}
+    <br />
+    {{# prev }}
+        <a href="{{ prev }}">&lt;Previous page</a>
+    {{/ prev }}
+    {{# next }}
+        <a href="{{ next }}">Next page ></a>
+    {{/ next }}
+{{/ pagination }}

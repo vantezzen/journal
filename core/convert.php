@@ -66,15 +66,30 @@ class convert {
         // Copy assets folder
         $this->copyAssets();
 
+        // Intialize variables
         $files = [];
+        $posts = $this->core->component('database')->tableData('posts');
 
         // Generate Homepage
         $index = $this->core->component('pages')->home();
         $this->core->component('file')->save('public/index.html', $index);
         $files[] = 'index.html';
 
+        // Apply pagination if enabled
+        if ($this->core->setting('pagination') == 'yes') {
+            $steps = $this->core->setting('pagination_steps');
+            $num = count($posts);
+        
+            // Create new pages while there are still posts left
+            for ($i = 1; ($i * $steps) < $num; $i++) {
+                $page = $this->core->component('pages')->home($i);
+                $this->core->component('file')->save('public/home-' . $i . '.html', $page);
+                $files[] = 'home-' . $i . '.html';
+            }
+        }
+        
+
         // Generate Posts
-        $posts = $this->core->component('database')->tableData('posts');
         foreach($posts as $post) {
             $page = $this->core->component('pages')->post($post);
             $path = $this->core->component('url')->get($post);

@@ -42,6 +42,8 @@ class core {
         'language' => 'EN',
         'copyright' => '',
         'url_format' => 2,
+        'pagination' => 'no',
+        'pagination_steps' => 20,
         'comments_provider' => 0,
         'upload_uploader' => 0,
         'upload_port' => '',
