@@ -278,6 +278,29 @@ class dashboard {
     }
 
     /**
+     * Render menu page
+     * 
+     * Used when calling GET /menu
+     * 
+     * @param string $url URL to use while rendering
+     * @return string Rendered page
+     */
+    public function renderMenu(string $url): string {
+        $template = $this->getFile('menu');
+
+        $items = $this->core->component('database')->tableData('menu');
+        $data = [
+            'items' => $items,
+            'url' => $url
+        ];
+
+        $render = $this->render($template, $data);
+        $page = $this->applyBase($render, $url);
+
+        return $page;
+    }
+
+    /**
      * Render installation page
      * 
      * Used when calling GET /install

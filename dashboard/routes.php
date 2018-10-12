@@ -133,6 +133,45 @@ $app->get('/uploading[/]', function($request, $response, $args) use ($core) {
     return $core->component('dashboard')->renderUploading($url);
 });
 
+// Menu page
+$app->get('/menu[/]', function($request, $response, $args) use ($core) {
+    $url = $request->getUri()->getBaseUrl();
+    return $core->component('dashboard')->renderMenu($url);
+});
+
+// Save menu
+$app->post('/menu[/]', function($request, $response, $args) use ($core) {
+    $data = $request->getParsedBody();
+
+    $db = $core->component('database')->table('menu');
+
+    $items = json_decode($data['menu_list'], true);
+    $db->truncate();
+
+    foreach($items as $item) {
+        $db->insert($item);
+    }
+    $db->save();
+
+    // Regenerate static files
+    $core->component('convert')->all();
+
+    $url = $request->getUri()->getBaseUrl();
+
+    // Check if need to upload blog
+    if (
+        $core->setting('upload_uploader') !== 0 &&      // Uploader specified
+        (!$core->component('upload')->serverHasBlog()  // Server doesn't have blog on it
+        || (!isset($oldsettings['theme']) && $data['theme'] !== 'default') // Theme has been set initially
+        || (isset($oldsettings['theme']) && $oldsettings['theme'] !== $data['theme'])) // Theme has been changed
+    ) {
+        // Redirect to upload blog
+        return $response->withHeader('Location', $url . '/perform_upload.php');
+    } else {
+        return $response->withHeader('Location', $url . '/menu');
+    }
+});
+
 
 // Settings page
 $app->get('/settings[/]', function($request, $response, $args) use ($core) {

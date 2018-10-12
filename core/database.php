@@ -72,6 +72,11 @@ class database {
             'key',
             'value'
         ], false, ['folder' => 'tables/']);
+
+        $this->tables['menu'] = new Table('menu', [
+            'text',
+            'url'
+        ], false, ['folder' => 'tables/']);
     }
 
     /**
