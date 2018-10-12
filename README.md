@@ -20,6 +20,9 @@ Table of Contents
         - [home.html](#homehtml)
         - [post.html](#posthtml)
         - [assets/](#assets)
+    - [Supporting Journal features in custom themes](#supporting-journal-features-in-custom-themes)
+        - [Menu support](#menu-support)
+        - [Pagination support](#pagination-support)
     - [Theme watcher](#theme-watcher)
 - [Backing up](#backing-up)
 - [Upcomming features](#upcomming-features)
@@ -118,6 +121,7 @@ Availible variables are:
 - copyright : Blog copyright text
 - language : Language code of the blogs language (for use in html lang tag)
 - url : URL of the final blog (e.g. https://example.com)
+- [menu](#menu-support) : Create menues
   
 Availible methods are:
 - include : Include another .html file
@@ -136,6 +140,9 @@ Example base.html
         {{# include }}
             parts/nav
         {{/ include }}
+        {{# menu }}
+          <a href="{{ url }}">{{ text }}</a>
+        {{/ menu }}
 
         {{{ content }}}
 
@@ -146,13 +153,17 @@ Example base.html
 </html>
 ```
 ### home.html
-This file will be used to create your blog homepage. A `post` area should be created. This area will be repeated for every post. This page will be wrapped inside base.html.
+This file will be used to create your blog homepage. A `post` area should be created which will be repeated for every post. This page will be wrapped inside base.html.
+You should add [support for pagination](#pagination-support) to this file.
 
 Availible variables are:
 - post : Array of all posts
 - title : Blog title
 - description : Blog description
 - copyright : Blog copyright text
+- [pagination](#pagination-support) : True, if pagination is activated
+- [prev](#pagination-support) : Previous page of pagination
+- [next](#pagination-support) : Next page of pagination
 
 Inside `post` you can use:
 - title : Title of the post. This should always be inserted using triple-brackets as the title has already been escaped
@@ -176,6 +187,16 @@ Example home.html
 {{^ post }}
 <b>There are no posts yet!</b>
 {{/ post }}
+
+{{# pagination }}
+    <br />
+    {{# prev }}
+        <a href="{{ prev }}">&lt;Previous page</a>
+    {{/ prev }}
+    {{# next }}
+        <a href="{{ next }}">Next page ></a>
+    {{/ next }}
+{{/ pagination }}
 ```
 ### post.html
 This file will be used to create pages for all posts. This page will be wrapped inside base.html.
@@ -212,6 +233,36 @@ assets/
         bootstrap.min.js
 ```
 
+
+## Supporting Journal features in custom themes
+Journal ships with features that allow you to customize the theme without having to edit the theme source files. In order for these features to work, the theme has to have build-in support - otherwise these features can't be used.
+
+### Menu support
+Journal has a build-in menu editor that allows adding custom links to the main pag menu. To support menues, add a `menu` area to on of your base files. Inside this area you can use the variables `url` and `text` to create the links
+
+Example menu:
+```html
+{{# menu }}
+<a href="{{ url }}">{{ text }}</a>
+{{/ menu }}
+```
+
+### Pagination support
+Journal allows you to add automatic pagination to your page. To implement pagination into your theme, add a `pagination` area to your [home.html](#homehtml). This area will only be shown if pagination is activated. Inside the `pagination` area add a `prev` and `next` area for the previous and next page. Inside these you can use the variables `prev` and `next` as URLs for the previous and next page. The `prev` and `next` areas will be hidden if there is no previous or next page availible.
+
+Example pagination:
+```html
+{{# pagination }}
+    <br />
+    {{# prev }}
+        <a href="{{ prev }}">&lt;Previous page</a>
+    {{/ prev }}
+    {{# next }}
+        <a href="{{ next }}">Next page ></a>
+    {{/ next }}
+{{/ pagination }}
+```
+
 ## Theme watcher
 When developing themes it can get very annoying to regenerate static blog files on every change in the theme. To help with this work, Journal comes with a theme watcher. The theme watcher will watch for changes in your theme folder and automatically regenerate the static blog files.
 Journals theme watcher is build with Node.JS. You will first need to install its dependencies with
@@ -231,9 +282,7 @@ Backuping up Journal is easy: Simply backup Journals `tables/`, `public/` and `t
 
 # Upcomming features
 These features are planned for the next versions of Journal
-- Menu settings for themes (=> Add custom links to menus)
 - More upload methods (ZIP Archive, WebDAV)
-- Pagination support
 
 # License
 Journal is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
