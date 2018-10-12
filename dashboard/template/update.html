@@ -22,7 +22,10 @@
     </tr>
 </table>
 <b>What has changed:</b><br />
-{{ changelog }}
+<div class="changelog">
+    {{{ changelog }}}
+</div>
+
 {{# update_availible }}
     {{# has_errors }}
         <ul class="list-unstyled mt-3">
@@ -50,5 +53,7 @@
     {{/ has_errors }}
 {{/ update_availible }}
 {{^ update_availible }}
-There is no update availible
+<div class="mt-3">
+    There is no update availible
+</div>
 {{/ update_availible }}

@@ -358,13 +358,18 @@ class dashboard {
         
         $permissions = $this->core->component('update')->checkPermissions();
 
+        $changelog = $this->core->component('update')->changelog();
+        $parsedown = new \Parsedown();
+        $parsedown->setSafeMode(true);
+        $changelog = $parsedown->text($changelog);
+
         // Information needed for the update screen
         $data = [
             'folder' => $permissions['permissions'],
             'has_errors' => $permissions['hasErrors'],
             'current_version' => $this->core->component('update')->currentVersion(),
             'newest_version' => $this->core->component('update')->newestVersion(),
-            'changelog' => $this->core->component('update')->changelog(),
+            'changelog' => $changelog,
             'page_1' => true,
             'url' => $url
         ];
