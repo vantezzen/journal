@@ -19,3 +19,4 @@ themes/*
 
 # Other files
 direct.php
+core/cache/*
