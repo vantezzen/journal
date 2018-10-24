@@ -137,7 +137,7 @@ class dashboard {
         // Check if is uploading in background or is uploadable
         $settings = $this->core->component('database')->table('settings');
         $uploading = (count($settings->select(['key' => 'uploading'])->selected()) > 0 && $settings->selected()[0]['value'] > (time() - 3600));
-        $uploadable = ($this->core->setting('upload_uploader') !== 0 && !$uploading);
+        $uploadable = ($this->core->setting('upload_uploader') !== 0);
 
         // 'Uploading' in database but over 1h old => Delete
         if (count($settings->select(['key' => 'uploading'])->selected()) > 0 
@@ -150,7 +150,8 @@ class dashboard {
             'post' => $posts,
             'url' => $url,
             'uploadable' => $uploadable,
-            'uploading' => $uploading
+            'uploading' => $uploading,
+            'au_enabled' => $this->core->setting('au_enabled')
         ]);
 
         // Apply base template to page

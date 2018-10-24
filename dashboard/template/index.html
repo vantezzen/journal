@@ -4,6 +4,19 @@
         <span class="icon-info"></span> Journal is currently uploading files to your server in the background - this might take a few minutes but you can continue using Journal in that time. This message will dissapear as soon as uploading is done.
     </div>
     {{/ uploading }}
+    {{# uploadable }}
+    <form action="{{ url }}/" method="post">
+        <button class="btn btn-block btn-dark" type="submit">
+            <span class="icon-cloud-upload"></span> 
+            {{# au_enabled }}
+            Pause automatic uploading
+            {{/ au_enabled }}
+            {{^ au_enabled }}
+            Resume automatic uploading
+            {{/ au_enabled }}
+        </button>
+    </form>
+    {{/ uploadable }}
     {{# post }}
     <div class="card">
         <div class="card-body">

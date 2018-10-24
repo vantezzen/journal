@@ -20,6 +20,34 @@ $app->get('/', function($request, $response, $args) use ($core) {
     return $core->component('dashboard')->renderIndex($url);
 });
 
+// Toggle automatic uploading
+$app->post('/', function($request, $response, $args) use ($core) {
+    // Change setting
+    $db = $core->component('database')->table('settings');
+
+    $db->select(['key' => 'au_enabled']);
+    if (count($db->selected()) == 0) {
+        $db->insert(['key' => 'au_enabled', 'value' => 0]);
+    }  else {
+        $current = $db->selected()[0]['value'];
+        $db->update(['value' => (!$current)]);
+    }
+    $db->save();
+
+    // Reload settings
+    $core->component('database')->loadSettings();
+
+    if ($core->setting('au_enabled') == 1) {
+        // Redirect to upload page
+        $url = $request->getUri()->getBaseUrl();
+        return $response->withHeader('Location', $url . '/perform_upload.php');
+    } else {
+        // Redirect to index page
+        $url = $request->getUri()->getBaseUrl();
+        return $response->withHeader('Location', $url);
+    }
+});
+
 
 // Write/create/edit post
 $app->get('/write[/[{edit}[/]]]', function($request, $response, $args) use ($core) {
