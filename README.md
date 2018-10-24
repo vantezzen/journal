@@ -16,9 +16,10 @@ Table of Contents
     - [...GitHub Pages](#github-pages)
     - [...Dropbox or my WebDAV server](#dropbox-or-my-webdav-server)
 - [Custom themes](#custom-themes)
-        - [base.html](#basehtml)
-        - [home.html](#homehtml)
-        - [post.html](#posthtml)
+    - [Variables](#variables)
+    - [Files and folders](#files-and-folders)
+        - [home.blade.php](#homebladephp)
+        - [post.blade.php](#postbladephp)
         - [assets/](#assets)
     - [Supporting Journal features in custom themes](#supporting-journal-features-in-custom-themes)
         - [Menu support](#menu-support)
@@ -40,6 +41,7 @@ Journal is a simple CMS for static blogs. It aims to simplify the creation and m
 - [Intelligent post formatting](#intelliformat)
 - [Markdown support](#markdown-support)
 - Custom theme support
+- Custom theme creation with [Laravel Blade](https://laravel.com/docs/5.7/blade) views
 - Easy theme developement through [theme watcher](#theme-watcher)
 - Build-in updater
 
@@ -107,116 +109,89 @@ See [How can I publish my blog on Netlify](#netlify).
 Dropbox and WebDAV support will be added in one of the next versions of Journal.
 
 # Custom themes
-Journal allows for the creation of custom themes. It utilizes [Mustache](https://mustache.github.io/) to turn themes into pages. To see an example theme, look at `themes/default/`.
-Every theme has its own folder in `themes/` with its name. It is highly adviced to have a basic understanding of the syntax of [Mustache](https://mustache.github.io/) before creating custom themes.
+Journal allows for the creation of custom themes. It utilizes [Laravel Blade](https://laravel.com/docs/5.7/blade) to turn themes into pages. To see an example theme, look at `themes/default/`.
+Every theme has its own folder in `themes/` with its name. It is highly adviced to have a basic understanding of the syntax of [Laravel Blade](https://laravel.com/docs/5.7/blade) before creating custom themes.
+
+## Variables
+Journal settings are availible in custom themes by their internal name (look at `tables/settings.csv` for setting names). There are some additional variables (mainly `$menu`) availible.
+
+Most important variables are:
+- $title : Title of the page
+- $description : Blog description
+- $copyright : Blog copyright text
+- $language : Language code of the blogs language (for use in html lang tag)
+- $url : URL of the final blog (e.g. https://example.com)
+- [$menu](#menu-support) : Menu array
+
+
+## Files and folders
 
 Journal requires the following files and folders to be existent in a themes folder:
 
-### base.html
-This file holds a scaffold and will be wrapped around every other page. Journal will also require you to have a '{{{ content }}}' tag in your base.html in which other pages will be inserted. 
-Availible variables are:
-- content : Code for the page that will be inserted
-- title : Title of the page
-- description : Blog description
-- copyright : Blog copyright text
-- language : Language code of the blogs language (for use in html lang tag)
-- url : URL of the final blog (e.g. https://example.com)
-- [menu](#menu-support) : Create menues
-  
-Availible methods are:
-- include : Include another .html file
-  
-Example base.html
-```html
-<!DOCTYPE html>
-<html lang="{{ language }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ title }}</title>
-</head>
-    <body>
-        {{# include }}
-            parts/nav
-        {{/ include }}
-        {{# menu }}
-          <a href="{{ url }}">{{ text }}</a>
-        {{/ menu }}
-
-        {{{ content }}}
-
-        {{# include }}
-            parts/footer
-        {{/ include }}
-    </body>
-</html>
-```
-### home.html
-This file will be used to create your blog homepage. A `post` area should be created which will be repeated for every post. This page will be wrapped inside base.html.
+### home.blade.php
+This file will be used to create your blog homepage. You should loop through the `$posts` array to create a list of posts. This array will be pre-shortened if pagination is enabled.
 You should add [support for pagination](#pagination-support) to this file.
 
-Availible variables are:
-- post : Array of all posts
-- title : Blog title
-- description : Blog description
-- copyright : Blog copyright text
-- [pagination](#pagination-support) : True, if pagination is activated
-- [prev](#pagination-support) : Previous page of pagination
-- [next](#pagination-support) : Next page of pagination
+Additional variables availible in this view are:
+- $posts : Array of all posts
+- [$pagination](#pagination-support) : True, if pagination is activated
+- [$prev](#pagination-support) : Previous page of pagination
+- [$next](#pagination-support) : Next page of pagination
 
-Inside `post` you can use:
-- title : Title of the post. This should always be inserted using triple-brackets as the title has already been escaped
-- text : Full post text.This should always be inserted using triple-brackets as the text has already been escaped
-- `trimmedText` method : Only get a trimmed text of sepecified length (see example)
+Each element of `$posts` contains:
+- title : Title of the post. This should always be inserted unescaped as the title has already been escaped
+- text : Full post text. This should always be inserted unescaped as the text has already been escaped
+- trimmedText : Trimmed text to 200 characters
 - path : Relative path to the post (e.g. my-post.html)
 - url : Absolute URL to the post (e.g. https://example.com/my-post.html)
 - id : ID of the post
 
-Example home.html
+Example home.blade.php
 ```html
-<h1>Home</h1>
+@extends('base')
 
-{{# post }}
-<h1>{{{ title }}}</h1>
-<p>{{# trimmedText}}150{{/ trimmedText}}</p>
-<a href="{{ path }}">Open post</a>
-<a href="{{ url }}">Absolute URL</a>
-{{/ post }}
+@section('content')
+    @foreach ($posts as $post)
+        <h1>{!! $post['title'] !!}</h1>
+        <p>{!! $post['trimmedText'] !!}</p>
+        <a href="{{ $post['path'] }}">Open post</a>
+        <a href="{{ $post['url'] }}">Absolute URL</a>
+    @endforeach
 
-{{^ post }}
-<b>There are no posts yet!</b>
-{{/ post }}
-
-{{# pagination }}
-    <br />
-    {{# prev }}
-        <a href="{{ prev }}">&lt;Previous page</a>
-    {{/ prev }}
-    {{# next }}
-        <a href="{{ next }}">Next page ></a>
-    {{/ next }}
-{{/ pagination }}
+    @if($pagination)
+        <br />
+        @if($prev)
+            <a href="{{ $prev }}">&lt;Previous page</a>
+        @endif
+        @if ($next)
+            <a href="{{ $next }}">Next page &gt;</a>
+        @endif
+    @endif
+@endsection
 ```
-### post.html
-This file will be used to create pages for all posts. This page will be wrapped inside base.html.
+### post.blade.php
+This file will be used to create pages for all posts.
 
-Availible variables are:
-- title : Title of the post. This should always be inserted using triple-brackets as the title has already been escaped
-- text : Full post text.This should always be inserted using triple-brackets as the title has already been escaped
-- path : Relative path to the post (e.g. my-post.html)
-- url : Absolute URL to the psot (e.g. https://example.com/my-post.html)
-- comments : Code for comment section*
+Additional variables availible in this view are:
+- $title : Title of the post. This should always be inserted unescaped as the title has already been escaped
+- $text : Full post text. This should always be inserted unescaped as the title has already been escaped
+- $path : Relative path to the post (e.g. my-post.html)
+- $comments : Code for comment section. This should always be inserted unescaped.
 
-You should add a triple-bracketed `comments` to your post.html to add support for a comment section. This will be replaced with the comments section of the chosen comment provider when generating static pages. 
+*This will be replaced with the comments section of the chosen comment provider when generating static pages. 
 
-Example post.html
+Example post.blade.php
 ```html
-<h1>{{{ title }}}</h1>
-<p>{{{ text }}}</p>
+@extends('base')
 
-{{{ comments }}}
+@section('content')
+<h1>{!! $title !!}</h1>
+<p>{!! $text !!}</p>
+
+{!! $comments !!}
+@endsection
 ```
+
 ### assets/
 The assets folder should contain all additional assets that are required for the theme (i.e. css and js files). This folder will be copied to public/assets/ automatically.
 
@@ -242,25 +217,24 @@ Journal has a build-in menu editor that allows adding custom links to the main p
 
 Example menu:
 ```html
-{{# menu }}
-<a href="{{ url }}">{{ text }}</a>
-{{/ menu }}
+@foreach ($menu as $menuItem)
+    <a href="{{ $menuItem['url'] }}">{{ $menuItem['text'] }}</a>
+@endforeach
 ```
 
 ### Pagination support
-Journal allows you to add automatic pagination to your page. To implement pagination into your theme, add a `pagination` area to your [home.html](#homehtml). This area will only be shown if pagination is activated. Inside the `pagination` area add a `prev` and `next` area for the previous and next page. Inside these you can use the variables `prev` and `next` as URLs for the previous and next page. The `prev` and `next` areas will be hidden if there is no previous or next page availible.
+Journal allows you to add automatic pagination to your page. To implement pagination into your theme, add a `pagination` area to your [home.blade.php](#homebladephp). This area will only be shown if pagination is activated. Inside the `pagination` area add a `prev` and `next` area for the previous and next page. Inside these you can use the variables `prev` and `next` as URLs for the previous and next page. The `prev` and `next` areas will be hidden if there is no previous or next page availible.
 
 Example pagination:
 ```html
-{{# pagination }}
-    <br />
-    {{# prev }}
-        <a href="{{ prev }}">&lt;Previous page</a>
-    {{/ prev }}
-    {{# next }}
-        <a href="{{ next }}">Next page ></a>
-    {{/ next }}
-{{/ pagination }}
+@if($pagination)
+    @if($prev)
+        <a href="{{ $prev }}">&lt;Previous page</a>
+    @endif
+    @if ($next)
+        <a href="{{ $next }}">Next page &gt;</a>
+    @endif
+@endif
 ```
 
 ## Theme watcher
