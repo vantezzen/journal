@@ -47,6 +47,7 @@ class core {
         'comments_provider' => 0,
         'upload_uploader' => 0,
         'upload_port' => '',
+        'au_enabled' => true,
         'search_updates' => 'yes',
         'intelliformat_markdown' => 'no',
         'intelliformat_code' => 'no'
