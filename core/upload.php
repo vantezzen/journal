@@ -72,7 +72,7 @@ class upload {
      */
     public function post(array $post) {
         // Check if an uploader has been chosen
-        if ($this->core->setting('upload_uploader') === 0) {
+        if ($this->core->setting('upload_uploader') == 0) {
             return;
         }
 
