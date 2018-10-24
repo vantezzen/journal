@@ -6,6 +6,7 @@ Table of Contents
 - [Installing Journal](#installing-journal)
 - [Screenshots](#screenshots)
 - [Security](#security)
+- [Official themes](#official-themes)
 - [Comments](#comments)
 - [Automatic uploading](#automatic-uploading)
 - [IntelliFormat](#intelliformat)
@@ -62,6 +63,11 @@ Create post
 Journals dashboard is **_in no way_** meant to be used on a public server. There is no login screen, your settings (including server credentials when using automatic uploading) are stored in plain text in a publicly availible folder. Please **_only_** use Journal on a local or otherwise protected webserver.
 
 Please note that these warning do not apply to the final static files stored in the `public/` folder.
+
+# Official themes
+- default (build-in, very simple theme to get developers started)
+- [clean_blog](https://github.com/vantezzen/journal-cleanblog)
+- [gin](https://github.com/vantezzen/journal-gin)
 
 # Comments
 Journal allows you to add a Disqus comment section to every post. To activate comments, in your Journal dashboard, go to "Comments", as the Provider select "Disqus". You then need to get the identifier of your Disqus admin account (`my-blog-6`.disqus.com). After saving, the comments section shoud appear at the end of your post.
