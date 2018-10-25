@@ -12,9 +12,9 @@
 
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-    <link href="{{ page_url }}/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ page_url }}/assets/css/simple-line-icons.css" rel="stylesheet">
-    <link href="{{ page_url }}/assets/css/style.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/simple-line-icons.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/style.css" rel="stylesheet">
     <style>
         .icon-check {
             color: #2ecc71;
@@ -30,40 +30,37 @@
     <div id="wrapper" class="container mt-4">
         <!-- Page Content -->
         <div id="page-content-wrapper">
-            <img src="{{ page_url }}/assets/img/logo.png" alt="Journal logo" class="img-fluid">
+            <img src="{{ $base }}/assets/img/logo.png" alt="Journal logo" class="img-fluid">
             <h1>Welcome to Journal</h1>
-            {{# has_errors }}
+            @if ($has_errors)
             <p>Before we begin please make sure Journal has enough permissions to read and write to these folders:</p>
             <ul>
                     <li>
-                        {{# read_tables }}
+                        @if ($read_tables)
                             <span class="icon-check"></span>
-                        {{/ read_tables }}
-                        {{^ read_tables }}
+                        @else
                             <span class="icon-close"></span>
-                        {{/ read_tables }}
+                        @endif
                         Journal can read and write to the <code>tables/</code> folder
                     </li>
                     <li>
-                        {{# read_public }}
+                        @if ($read_public)
                             <span class="icon-check"></span>
-                        {{/ read_public }}
-                        {{^ read_public }}
+                        @else
                             <span class="icon-close"></span>
-                        {{/ read_public }}
+                        @endif
                         Journal can read and write to the <code>public/</code> folder
                     </li>
             </ul>
-            <a href="{{ page_url }}/install" class="btn btn-block btn-outline-dark"><span class="icon-refresh"></span> Re-check permissions</a>
-            {{/ has_errors }}
-            {{^ has_errors }}
+            <a href="{{ $base }}/install" class="btn btn-block btn-outline-dark"><span class="icon-refresh"></span> Re-check permissions</a>
+            @else
             <p>Welcome to Journal - a simple CMS for creating a static blog. Your webserver already seems to be set up correctly so we can continue with setting up Journal.<br />
                 You can start by creating a new post right away but we advice you to look through Journals settings once to fit your blog.</p>
             <p>If you have any problems please don't hesitate to look at <a href="https://github.com/vantezzen/journal/wiki">Journals documentation</a> or <a href="https://github.com/vantezzen/journal/issues">create a new issue on GitHub</a>.</p>
-            <form action="{{ page_url }}/install" method="post">
+            <form action="{{ $base }}/install" method="post">
                 <button type="submit" class="btn btn-block btn-outline-dark"><span class="icon-rocket"></span> Set up Journal</button>
             </form>
-            {{/ has_errors }}
+            @endif
         </div>
         <!-- /#page-content-wrapper -->
 
@@ -71,8 +68,8 @@
     <!-- /#wrapper -->
 
     <!-- Bootstrap core JavaScript -->
-    <script src="{{ page_url }}/assets/js/jquery.min.js"></script>
-    <script src="{{ page_url }}/assets/js/bootstrap.min.js"></script>
+    <script src="{{ $base }}/assets/js/jquery.min.js"></script>
+    <script src="{{ $base }}/assets/js/bootstrap.min.js"></script>
 
 
 </body>
