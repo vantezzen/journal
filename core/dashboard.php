@@ -259,9 +259,8 @@ class dashboard {
         ];
 
         $render = $this->render('menu', $data);
-        $page = $this->applyBase($render, $url);
 
-        return $page;
+        return $render;
     }
 
     /**
