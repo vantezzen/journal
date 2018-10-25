@@ -35,7 +35,7 @@ class dashboard {
      * Constructor
      * 
      * The constructor will save the core instance, register itself on the core instance
-     * and initiate a new Mustache_Engine instance.
+     * and initiate a new Blade instance.
      *
      * @param core $core Instance of the core to connect to
      * @return void
