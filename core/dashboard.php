@@ -14,7 +14,6 @@
  */
 namespace core;
 
-use Mustache_Engine;
 use Jenssegers\Blade\Blade;
 
 class dashboard {
@@ -31,13 +30,6 @@ class dashboard {
      * @var \Jenssegers\Blade\Blade
      */
     public $blade;
-
-    /**
-     * Mustache_Engine instance used to render pages
-     * 
-     * @var \Mustache_Engine
-     */
-    public $mustache;
     
     /**
      * Constructor
@@ -50,7 +42,6 @@ class dashboard {
      */
     public function __construct(core $core) {
         $this->core = $core;
-        $this->mustache = new Mustache_Engine;
         $this->blade = new Blade('dashboard/template/', 'core/cache/');
 
         $core->registerComponent('dashboard', $this);
