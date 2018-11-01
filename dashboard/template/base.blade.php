@@ -15,7 +15,7 @@
     <link href="{{ $base }}/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ $base }}/assets/css/simple-line-icons.css" rel="stylesheet">
     <link href="{{ $base }}/assets/css/sidebar.css" rel="stylesheet">
-    <link href="{{ $base }}/assets/css/style.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/main.css" rel="stylesheet">
     <link href="{{ $base }}/assets/css/write.css" rel="stylesheet">
 
 </head>
