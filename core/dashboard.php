@@ -73,6 +73,8 @@ class dashboard {
             $update = false;
         }
         $extend['update'] = $update;
+
+        $extend['settings'] = $this->core->settings;
         
         $content = array_merge($content, $extend);
 

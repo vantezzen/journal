@@ -17,7 +17,11 @@
     <link href="{{ $base }}/assets/css/sidebar.css" rel="stylesheet">
     <link href="{{ $base }}/assets/css/main.css" rel="stylesheet">
     <link href="{{ $base }}/assets/css/write.css" rel="stylesheet">
+    @yield('styles')
 
+    <script>
+        window.Journal = {!! json_encode($settings) !!};
+    </script>
 </head>
 
 <body>
@@ -80,6 +84,7 @@
     <!-- Bootstrap core JavaScript -->
     <script src="{{ $base }}/assets/js/jquery.min.js"></script>
     <script src="{{ $base }}/assets/js/bootstrap.min.js"></script>
+    @yield('scripts')
 
     <!-- Menu Toggle Script -->
     <script>
