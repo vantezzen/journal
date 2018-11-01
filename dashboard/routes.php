@@ -63,7 +63,7 @@ $app->get('/write[/[{edit}[/]]]', function($request, $response, $args) use ($cor
 });
 
 // Save post
-$app->post('/save[/]', function($request, $response, $args) use ($core) {
+$app->post('/save[/[{isBackground}[/]]]', function($request, $response, $args) use ($core) {
     $data = $request->getParsedBody();
 
     // Check if new post or edit existing post
@@ -117,9 +117,11 @@ $app->post('/save[/]', function($request, $response, $args) use ($core) {
 
     // Regenerate static files
     $core->component('convert')->all();
-
-    // Upload to server
-    $core->component('upload')->post($data);
+        
+    if (!isset($args['isBackground']) || $args['isBackground'] != '1') {
+        // Upload to server (if not in background)
+        $core->component('upload')->post($data);
+    }
 
     // Redirect to edit page
     $url = $request->getUri()->getBaseUrl();

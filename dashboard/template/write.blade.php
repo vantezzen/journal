@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container-fluid">
-        <form action="{{ $base }}/save" method="post">
+        <form action="{{ $base }}/save" method="post" id="form">
             <input 
                 type="text" 
                 class="form-control title" 
@@ -10,7 +10,9 @@
                 name="title" 
                 placeholder="Add a title for your post..." 
                 value="{{ $post_title }}">
-            <textarea id="text" placeholder="Write your post..." name="text" class="text">{{ $post_text }}</textarea>
+            <div id="text" class="text"></div>
+            <input type="hidden" name="text">
+            {{-- <textarea id="text" placeholder="Write your post..." name="text" class="text">{{ $post_text }}</textarea> --}}
             @if ($edit)
             <input type="hidden" name="edit" value="{{ $post_id }}">
             @endif
@@ -22,6 +24,7 @@
             @if ($edit)
                 <button class="btn btn-outline-danger" id="delete-btn" data-toggle="modal" data-target="#delete">Delete post</button>
             @endif
+            <button class="btn btn-outline-dark" id="toggle-autoformat">Disable Formatting Preview</button>
         </div>
     </footer>
     <div id="saving_screen">
@@ -30,8 +33,7 @@
             <h3 class="mt-4">Saving...</h3>
         </div>
     </div>
-    
-    
+
     <script>
     // Lock inputs on save and delete
     document.addEventListener('DOMContentLoaded', function() {
@@ -79,4 +81,17 @@
             </div>
         </div>
         </div>
+@endsection
+
+@section('styles')
+    <link href="{{ $base }}/assets/css/quill.css" rel="stylesheet">    
+@endsection
+
+@section('scripts')
+    <script>
+        window.Journal.text = `{!! str_replace("`", "\\`", $post_text)  !!}`;
+    </script>
+    <script src="{{ $base }}/assets/js/intelliformat.js"></script>
+    <script src="{{ $base }}/assets/js/quill.js"></script>
+    <script src="{{ $base }}/assets/js/write.js"></script>
 @endsection
