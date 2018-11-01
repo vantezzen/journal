@@ -1,6 +1,7 @@
 # 1.1.0
 - Add IntelliFormat
 - Add IntelliFormat formatters Links, Headings, Code and Markdown
+- Add IntelliFormat preview on writing page
 - Add automatic uploading
 - Add support for menues
 - Add support for pagination
