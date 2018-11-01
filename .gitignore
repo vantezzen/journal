@@ -20,3 +20,4 @@ themes/*
 # Other files
 direct.php
 core/cache/*
+.DS_Store
