@@ -15,6 +15,7 @@
                 <input type="url" class="form-control item_url" placeholder="https://example.com" value="{{ $item['url'] }}">
                 <small class="form-text text-muted">Page URL to redirect to after clicking the link.</small>
             </div>
+            <button type="button" class="btn btn-block btn-outline-dark delete-btn">Delete link</button>
         </li>
     @endforeach
 </ul>
@@ -39,6 +40,7 @@
             <input type="url" class="form-control item_url" placeholder="https://example.com">
             <small class="form-text text-muted">Page URL to redirect to after clicking the link.</small>
         </div>
+        <button type="button" class="btn btn-block btn-outline-dark delete-btn">Delete link</button>
     </li>
 </div>
 
@@ -151,6 +153,10 @@ function getItemList() {
     return JSON.stringify(items);
 }
 
+function removeItem() {
+    this.parentElement.remove();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Add item button
     $('#add_item').click(function() {
@@ -165,8 +171,14 @@ document.addEventListener('DOMContentLoaded', function() {
         col.addEventListener('drop', handleDrop, false);
         col.addEventListener('dragend', handleDragEnd, false);
 
+        // Add event listener for deleting
+        $(col).find('.delete-btn').click(removeItem);
+
         $('#menu_items').append(element);
     });
+
+    // Add event listeners for deleting
+    $('.delete-btn').click(removeItem);
 
     // Save menu
     $('#save_menu').click(function() {
