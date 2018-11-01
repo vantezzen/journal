@@ -64,6 +64,7 @@ class database {
             'title',
             'text',
             'revision',
+            'published',
             'created',
             'updated'
         ], false, ['folder' => 'tables/']);

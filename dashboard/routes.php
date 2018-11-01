@@ -118,8 +118,11 @@ $app->post('/save[/]', function($request, $response, $args) use ($core) {
     // Regenerate static files
     $core->component('convert')->all();
 
-    // Upload to server
-    $core->component('upload')->post($data);
+    // Upload to server if published
+    $published = $core->component('database')->table('posts')->select(['id' => $id])->selected()[0]['published'];
+    if ($published) {
+        $core->component('upload')->post($data);
+    }
 
     // Redirect to edit page
     $url = $request->getUri()->getBaseUrl();

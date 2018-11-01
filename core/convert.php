@@ -68,7 +68,7 @@ class convert {
 
         // Intialize variables
         $files = [];
-        $posts = $this->core->component('database')->tableData('posts');
+        $posts = $this->core->component('database')->table('posts')->select(['published' => '1'])->selected();
 
         // Generate Homepage
         $index = $this->core->component('pages')->home();
