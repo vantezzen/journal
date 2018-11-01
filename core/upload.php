@@ -130,7 +130,7 @@ class upload {
      */
     public function serverHasBlog() {
         // Check if an uploader has been chosen
-        if ($this->core->setting('upload_uploader') === 0) {
+        if ($this->core->setting('upload_uploader') == 0) {
             return true;
         }
 

@@ -87,7 +87,6 @@ class convert {
                 $files[] = 'home-' . $i . '.html';
             }
         }
-        
 
         // Generate Posts
         foreach($posts as $post) {

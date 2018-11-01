@@ -72,35 +72,26 @@ class pages {
 
         // Add additional information to posts
         foreach($posts as $key => $post) {
+            if (strlen(trim($post['text'])) > 200) {
+                $posts[$key]['trimmedText'] = substr($post['text'], 0, 197) . '...';
+            } else {
+                $posts[$key]['trimmedText'] = $post['text'];
+            }
             $posts[$key]['path'] = $this->core->component('url')->get($post);
             $posts[$key]['url'] = $this->core->component('url')->getFull($post);
             $posts[$key]['text'] = $this->core->component('intelliformat')->format($post['text']);
-            $posts[$key]['trimmedText'] = function($length) use ($post) {
-                $length = trim($length);
-                if (strlen($post['text']) > $length) {
-                    return substr($post['text'], 0, $length - 3) . '...';
-                } else {
-                    return $post['text'];
-                }
-            };
         }
 
         // Generate page
-        $template = $this->core->component('generator')->getFile('home');
-        $render = $this->core->component('generator')->render($template, [
-            'post' => $posts,
-
-            'title' => $this->core->setting('title'),
-            'description' => $this->core->setting('description'),
-            'copyright' => $this->core->setting('copyright'),
+        $render = $this->core->component('generator')->render('home', [
+            'posts' => $posts,
 
             'pagination' => $this->core->setting('pagination') == 'yes',
             'prev' => $prevPageAvailible ? $prevPage : false,
             'next' => $nextPageAvailible ? $nextPage : false
         ]);
-        $page = $this->core->component('generator')->applyBase($render);
 
-        return $page;
+        return $render;
     }
 
     /**
@@ -110,8 +101,6 @@ class pages {
      * @return string Page code
      */
     public function post(array $post): string {
-        $template = $this->core->component('generator')->getFile('post');
-
         $post['text'] = $this->core->component('intelliformat')->format($post['text']);
 
         // Collect data for render
@@ -122,10 +111,9 @@ class pages {
         ]);
 
         // Generate page
-        $render = $this->core->component('generator')->render($template, $data);
-        $page = $this->core->component('generator')->applyBase($render);
+        $render = $this->core->component('generator')->render('post', $data);
 
-        return $page;
+        return $render;
     }
 
     /**

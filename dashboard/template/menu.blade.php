@@ -1,26 +1,29 @@
+@extends('base')
+
+@section('content')
 <h1>Menu</h1>
 <ul class="list-group" id="menu_items">
-    {{# items }}
+    @foreach($items as $item)
         <li class="list-group-item menu-list-item" draggable="true">
             <div class="form-group">
                 <label>Link text</label>
-                <input type="text" class="form-control item_text" placeholder="Enter text" value="{{ text }}">
+                <input type="text" class="form-control item_text" placeholder="Enter text" value="{{ $item['text'] }}">
                 <small class="form-text text-muted">When clicked, this text will redirect to the specified page.</small>
             </div>
             <div class="form-group">
                 <label>URL</label>
-                <input type="url" class="form-control item_url" placeholder="https://example.com" value="{{ url }}">
+                <input type="url" class="form-control item_url" placeholder="https://example.com" value="{{ $item['url'] }}">
                 <small class="form-text text-muted">Page URL to redirect to after clicking the link.</small>
             </div>
         </li>
-    {{/ items }}
+    @endforeach
 </ul>
 <button type="button" id="add_item" class="btn btn-block btn-outline-dark mt-3"><span class="icon-plus"></span> Add item</button>
 
 <button type="button" id="save_menu" class="btn btn-block btn-outline-dark mt-3"><span class="icon-check"></span> Save</button>
 
 <!-- Hidden Form for submitting menu items -->
-<form action="{{ url }}/menu" method="post" id="menu_form">
+<form action="{{ $base }}/menu" method="post" id="menu_form">
     <input type="hidden" name="menu_list" value="" id="menu_list">
 </form>
 
@@ -181,3 +184,4 @@ document.addEventListener('DOMContentLoaded', function() {
     display: none;
 }
 </style>
+@endsection

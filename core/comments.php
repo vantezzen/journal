@@ -46,8 +46,7 @@ class comments {
         $code = '';
 
         if($this->core->setting('comments_provider') === 'disqus') {
-            $template = $this->core->component('dashboard')->getFile('comments/disqus');
-            $code = $this->core->component('dashboard')->render($template, [
+            $code = $this->core->component('dashboard')->render('comments/disqus', [
                 'url' => $this->core->setting('url'),
                 'full_url' => $this->core->component('url')->getFull($post),
                 'identifier' => $post['id'],

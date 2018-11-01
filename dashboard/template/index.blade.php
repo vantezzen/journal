@@ -1,33 +1,36 @@
+@extends('base')
+
+@section('content')
 <div class="container-fluid">
-    {{# uploading }}
+    @if ($uploading)
     <div class="alert alert-secondary" role="alert">
         <span class="icon-info"></span> Journal is currently uploading files to your server in the background - this might take a few minutes but you can continue using Journal in that time. This message will dissapear as soon as uploading is done.
     </div>
-    {{/ uploading }}
-    {{# uploadable }}
-    <form action="{{ url }}/" method="post">
+    @endif
+    @if ($uploadable)
+    <form action="{{ $base }}/" method="post">
         <button class="btn btn-block btn-dark" type="submit">
             <span class="icon-cloud-upload"></span> 
-            {{# au_enabled }}
+            @if ($au_enabled)
             Pause automatic uploading
-            {{/ au_enabled }}
-            {{^ au_enabled }}
+            @else
             Resume automatic uploading
-            {{/ au_enabled }}
+            @endif
         </button>
     </form>
-    {{/ uploadable }}
-    {{# post }}
+    @endif
+    @foreach($posts as $post)
     <div class="card">
         <div class="card-body">
-            <h4>{{{ title }}}</h4>
-            <p>{{{ text }}}</p>
-            <a href="{{ url }}/write/{{ id }}" class="btn btn-block btn-outline-dark"><span class="icon-pencil"></span> Edit</a>
+            <h4>{!! $post['title'] !!}</h4>
+            <p>{!! $post['text'] !!}</p>
+            <a href="{{ $base }}/write/{{ $post['id'] }}" class="btn btn-block btn-outline-dark"><span class="icon-pencil"></span> Edit</a>
         </div>
     </div>
-    {{/ post }}
-    {{^ post }}
+    @endforeach
+    @if(count($posts) === 0)
         <h1>So empty in here!</h1>
         <p>Start your blog by <a href="{{ url }}/write">creating your first post</a>.</p>
-    {{/ post }}
+    @endif
 </div>
+@endsection

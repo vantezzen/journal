@@ -206,6 +206,7 @@ class update {
      * @return void
      */
     public function update() {
+        return false;
         // Get download URL
         $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/journal/releases');
         $data = json_decode($resp, true);

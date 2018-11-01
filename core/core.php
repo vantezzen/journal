@@ -27,6 +27,42 @@ class core {
     public $settings;
 
     /**
+     * Availible setting keys
+     * 
+     * @var array
+     */
+    public $availibleSettings = [
+        'installation_done',
+        'search_updates',
+        'intelliformat_links',
+        'intelliformat_markdown',
+        'intelliformat_headings',
+        'intelliformat_code',
+        'title',
+        'description',
+        'url',
+        'language',
+        'copyright',
+        'url_format',
+        'theme',
+        'comments_provider',
+        'comments_identifier',
+        'upload_uploader',
+        'upload_server',
+        'upload_port',
+        'upload_username',
+        'upload_password',
+        'upload_path',
+        'upload_region',
+        'upload_bucket',
+        'pagination',
+        'pagination_steps',
+        'version_checked',
+        'newest_version',
+        'au_enabled'
+    ];
+
+    /**
      * User settings fallback
      * 
      * This fallback will be used when a setting is not availible in the user
