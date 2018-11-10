@@ -49,7 +49,7 @@ $app = new Slim($container);
 // Add installation middleware
 $app->add(function ($request, $response, $next) use ($core) {
     // Redirect to install page if not installed
-    if ($request->getUri()->getPath() !== 'install') {
+    if (!strstr($request->getUri()->getPath(), 'install')) {
         $db = $core->component('database')->table('settings');
         $db->select(['key' => 'installation_done']);
         if (count($db->selected()) == 0) {
