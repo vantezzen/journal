@@ -33,7 +33,7 @@
     @endforeach
     @if(count($posts) === 0)
         <h1>So empty in here!</h1>
-        <p>Start your blog by <a href="{{ url }}/write">creating your first post</a>.</p>
+        <p>Start your blog by <a href="{{ $base }}/write">creating your first post</a>.</p>
     @endif
 </div>
 @endsection
