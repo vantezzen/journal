@@ -17,6 +17,13 @@ namespace core;
 
 class core {
     /**
+     * Current Journal Core version
+     * 
+     * @var string
+     */
+    public $version = "1.1.0";
+
+    /**
      * User settings
      * 
      * These settings will be filled from core\database once all tables have
