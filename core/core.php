@@ -117,7 +117,7 @@ class core {
      * @param $component Instance of the component
      * @return void
      */
-    public function registerComponent(string $name, $component): void {
+    public function registerComponent(string $name, $component) {
         $this->components[$name] = $component;
     }
 

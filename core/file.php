@@ -96,7 +96,7 @@ class file {
      * @return void
      * @source https://stackoverflow.com/a/2050909/10005649
      */
-    public function copyFolder(string $src, string $dst): void { 
+    public function copyFolder(string $src, string $dst) { 
         $dir = opendir($src); 
         @mkdir($dst); 
         while(false !== ( $file = readdir($dir)) ) { 

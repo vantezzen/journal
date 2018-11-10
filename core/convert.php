@@ -41,7 +41,7 @@ class convert {
      * 
      * @return void
      */
-    public function clearFolder(): void {
+    public function clearFolder() {
         $this->core->component('file')->deleteFolder('public/', false);
     }
 
@@ -50,7 +50,7 @@ class convert {
      * 
      * @return void
      */
-    public function copyAssets(): void {
+    public function copyAssets() {
         $this->core->component('file')->copyFolder('themes/' . $this->core->setting('theme') . '/assets/', 'public/assets/');
     }
 
@@ -59,7 +59,7 @@ class convert {
      * 
      * @return void
      */
-    public function all(): void {
+    public function all() {
         // Clear folder before generating
         $this->clearFolder();
 

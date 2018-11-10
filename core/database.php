@@ -58,7 +58,7 @@ class database {
      * 
      * @return void
      */
-    private function initTables(): void {
+    private function initTables() {
         $this->tables['posts'] = new Table('posts', [
             'id',
             'title',
@@ -86,7 +86,7 @@ class database {
      * 
      * @return void
      */
-    public function loadSettings(): void {
+    public function loadSettings() {
         $data = $this->tables['settings']->data();
         $settings = [];
 
