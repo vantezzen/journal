@@ -219,7 +219,7 @@ assets/
 Journal ships with features that allow you to customize the theme without having to edit the theme source files. In order for these features to work, the theme has to have build-in support - otherwise these features can't be used.
 
 ### Menu support
-Journal has a build-in menu editor that allows adding custom links to the main pag menu. To support menues, add a `menu` area to on of your base files. Inside this area you can use the variables `url` and `text` to create the links
+Journal has a build-in menu editor that allows adding custom links to the main page menu. To support menues, add a `menu` area to on of your base files. Inside this area you can use the variables `url` and `text` to create the links
 
 Example menu:
 ```html
