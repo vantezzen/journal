@@ -4,6 +4,7 @@ Table of Contents
 - [About Journal](#about-journal)
 - [Features](#features)
 - [Installing Journal](#installing-journal)
+- [Demo](#demo)
 - [Screenshots](#screenshots)
 - [Security](#security)
 - [Official themes](#official-themes)
@@ -54,6 +55,9 @@ Journal is a simple CMS for static blogs. It aims to simplify the creation and m
     - tables/
 4. Open index.php through your webserver and start using Journal
 5. Once you create a new post you'll see files in the public/ folder. This is where Journal will put your static blog files. You can now upload these files to a static webserver.
+
+# Demo
+You can use a static demo of the Journal dashboard at [https://vantezzen.github.io/journal/](https://vantezzen.github.io/journal/).
 
 # Screenshots
 <p align="center"><img src="assets/img/screenshot_1.png"></p>
