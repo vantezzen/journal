@@ -57,6 +57,10 @@ class pages {
         // Apply pagination if enabled
         if ($this->core->setting('pagination') == 'yes') {
             $steps = $this->core->setting('pagination_steps');
+            if (!is_numeric($steps)) {
+                $steps = 20;
+            }
+            
             $start = $page * $steps;
 
             // Get information about previous and next page

@@ -78,6 +78,10 @@ class convert {
         // Apply pagination if enabled
         if ($this->core->setting('pagination') == 'yes') {
             $steps = $this->core->setting('pagination_steps');
+            if (!is_numeric($steps)) {
+                $steps = 20;
+            }
+
             $num = count($posts);
         
             // Create new pages while there are still posts left
@@ -85,6 +89,16 @@ class convert {
                 $page = $this->core->component('pages')->home($i);
                 $this->core->component('file')->save('public/home-' . $i . '.html', $page);
                 $files[] = 'home-' . $i . '.html';
+
+                // Stop if $i bigger 200 - there is probably an error
+                if ($i > 200) {
+                    echo "Oh! We couldn't generate your blog as there was an error while generating:<br />";
+                    echo "There were over 200 home pages to generate - this is probably an error.<br />";
+                    echo "Journal has stopped generating new files to save your webserver from crashing.<br />";
+                    echo "Debugging Info: <br />";
+                    var_dump($i, $steps, $num, is_numeric($steps), $this->core->version);
+                    exit();
+                }
             }
         }
 
