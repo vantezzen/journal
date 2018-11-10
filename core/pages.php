@@ -48,7 +48,7 @@ class pages {
      */
     public function home(int $page = 0): string {
         // Get posts from database and reverse (newest posts on top)
-        $posts = $this->core->component('database')->tableData('posts');
+        $posts = $this->core->component('database')->table('posts')->select(['published' => '1'])->selected();
         $posts = array_reverse($posts);
 
         $prevPageAvailible = false;

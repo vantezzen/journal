@@ -161,7 +161,8 @@ class dashboard {
             $post = [
                 'id' => false,
                 'title' => '',
-                'text' => ''
+                'text' => '',
+                'published' => '0'
             ];
             $isEdit = false;
         } else {
@@ -174,6 +175,7 @@ class dashboard {
             'post_title' => $post['title'],
             'post_text' => $post['text'],
             'post_id' => $post['id'],
+            'post_published' => $post['published'],
             'edit' => $isEdit,
             'base' => $url
         ];

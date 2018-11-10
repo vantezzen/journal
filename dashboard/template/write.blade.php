@@ -21,6 +21,9 @@
         <div class="container float-right">
             <button class="btn btn-outline-success" id="save-btn">Save</button>
             </form>
+            @if (!$post_published)
+                <button class="btn btn-outline-dark" id="publish-btn">Save and publish</button>
+            @endif
             @if ($edit)
                 <button class="btn btn-outline-danger" id="delete-btn" data-toggle="modal" data-target="#delete">Delete post</button>
             @endif

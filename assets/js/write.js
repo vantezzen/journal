@@ -69,6 +69,16 @@ if (window.localStorage.getItem('write.disable-autoformat') === 'yes') {
     disableAutoformat();
 }
 
+// Publish post
+$('#publish-btn').click(function() {
+    // Change action to also publish post
+    let action = $('#form').attr('action') + '/0/1';
+    $('#form').attr('action', action);
+
+    $('#form').submit();
+});
+
+
 // Auto-Save
 // setInterval(function() {
 //     let data = {

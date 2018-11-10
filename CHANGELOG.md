@@ -5,6 +5,7 @@
 - Add automatic uploading
 - Add support for menues
 - Add support for pagination
+- Add unpublished post support
 - Caching newest availible version in database (=> Improve performance)
 - Improve writing-page layout
 - Improve formatting of changelog on update page

@@ -23,6 +23,9 @@
     <div class="card">
         <div class="card-body">
             <h4>{!! $post['title'] !!}</h4>
+            @if (!$post['published'])
+            <div class="text-muted">Not yet published</div>
+            @endif
             <p>{!! $post['text'] !!}</p>
             <a href="{{ $base }}/write/{{ $post['id'] }}" class="btn btn-block btn-outline-dark"><span class="icon-pencil"></span> Edit</a>
         </div>
