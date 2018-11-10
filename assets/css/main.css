@@ -1,0 +1,38 @@
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.card {
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 0px 4px rgba(0,0,0,0.1);
+    margin-top: 30px;
+}
+
+.card:first-child {
+    margin-top: 0px;
+}
+
+.update-notification {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 100%;
+    background: #f07379;
+    display: inline-block;
+    margin-left: -12px;
+    margin-bottom: 6px;
+}
+.alert-outline {
+    border-color: #212121;
+    border-radius: 0.1rem;
+}
+
+.changelog {
+    background-color: #EBEBEB;
+    padding: 15px 15px;
+    border-radius: .2rem;
+}
+.changelog h1 {
+    font-size: 1rem;
+    font-weight: bold;
+}

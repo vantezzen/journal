@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Journal</title>
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/simple-line-icons.css" rel="stylesheet">
+    <link href="assets/css/sidebar.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/write.css" rel="stylesheet">
+    
+    <script>
+        window.Journal = {"version_checked":"1541851433","newest_version":"1.0.0","installation_done":"true","search_updates":"yes","intelliformat_links":"yes","intelliformat_markdown":"no","intelliformat_headings":"yes","intelliformat_code":"no","title":"Journal","description":"Lorem ipsum dolor sit amet","url":"https:\/\/vantezzen.github.io\/journal","language":"EN","copyright":"Copyright 2018, Journal","url_format":"2","theme":"default","pagination":"yes","pagination_steps":"","comments_provider":"0","comments_identifier":"lorem-ipsum","upload_uploader":"0","upload_server":"example.com","upload_port":"","upload_username":"root","upload_password":"1234","upload_path":"","upload_region":"","upload_bucket":"","au_enabled":"1"};
+    </script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="index.html">
+                        <span class="icon-pencil"></span> Journal
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html"><span class="icon-layers"></span> Posts</a>
+                </li>
+                <li>
+                    <a href="write.html"><span class="icon-note"></span> Create new</a>
+                </li>
+                <li>
+                    <a href="menu.html"><span class="icon-list"></span> Menu</a>
+                </li>
+                <li>
+                    <a href="generate.html">
+                        <span class="icon-settings"></span> 
+                                                Settings
+                    </a>
+                </li>
+                <hr>
+                <li>
+                    <a href="public/index.html"><span class="icon-eye"></span> View static blog</a>
+                </li>
+                <!-- <li>
+                    <a href="#"><span class="icon-logout"></span> Logout</a>
+                </li> -->
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+                <button class="navbar-toggler" id="menu-toggle"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </nav>
+
+            <div class="container-fluid">
+            <form action="index.html" method="post">
+        <button class="btn btn-block btn-dark" type="submit">
+            <span class="icon-cloud-upload"></span> 
+                        Pause automatic uploading
+                    </button>
+    </form>
+            <div class="card">
+        <div class="card-body">
+            <h4>Unpublished post</h4>
+                        <div class="text-muted">Not yet published</div>
+                        <p>This is an unpublished post. It will not be converted when creating the static blog files.<br /></p>
+            <a href="write/2.html" class="btn btn-block btn-outline-dark"><span class="icon-pencil"></span> Edit</a>
+        </div>
+    </div>
+        <div class="card">
+        <div class="card-body">
+            <h4>Lorem ipsum</h4>
+                        <p><br />Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.<br /><br />Commodo consequat. Duis aute irure dolor in reprehenderit in voluptate <br />velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint <br />occaecat cupidatat non proident, sunt in culpa qui officia deserunt <br />mollit anim id est laborum.<br /><br /><br /><h5><b>This is a heading</b></h5><br />Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillumdolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br /><br /><h5><b>function($a) {</b></h5><br />	echo 'This is some code';<br />}<br /></p>
+            <a href="write/1.html" class="btn btn-block btn-outline-dark"><span class="icon-pencil"></span> Edit</a>
+        </div>
+    </div>
+        </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+
+</body>
+
+</html>

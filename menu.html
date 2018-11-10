@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Journal</title>
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/simple-line-icons.css" rel="stylesheet">
+    <link href="assets/css/sidebar.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/write.css" rel="stylesheet">
+    
+    <script>
+        window.Journal = {"version_checked":"1541851433","newest_version":"1.0.0","installation_done":"true","search_updates":"yes","intelliformat_links":"yes","intelliformat_markdown":"no","intelliformat_headings":"yes","intelliformat_code":"no","title":"Journal","description":"Lorem ipsum dolor sit amet","url":"https:\/\/vantezzen.github.io\/journal","language":"EN","copyright":"Copyright 2018, Journal","url_format":"2","theme":"default","pagination":"yes","pagination_steps":"","comments_provider":"0","comments_identifier":"lorem-ipsum","upload_uploader":"0","upload_server":"example.com","upload_port":"","upload_username":"root","upload_password":"1234","upload_path":"","upload_region":"","upload_bucket":"","au_enabled":"1"};
+    </script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="index.html">
+                        <span class="icon-pencil"></span> Journal
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html"><span class="icon-layers"></span> Posts</a>
+                </li>
+                <li>
+                    <a href="write.html"><span class="icon-note"></span> Create new</a>
+                </li>
+                <li>
+                    <a href="menu.html"><span class="icon-list"></span> Menu</a>
+                </li>
+                <li>
+                    <a href="generate.html">
+                        <span class="icon-settings"></span> 
+                                                Settings
+                    </a>
+                </li>
+                <hr>
+                <li>
+                    <a href="public/index.html"><span class="icon-eye"></span> View static blog</a>
+                </li>
+                <!-- <li>
+                    <a href="#"><span class="icon-logout"></span> Logout</a>
+                </li> -->
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
+                <button class="navbar-toggler" id="menu-toggle"
+                    aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </nav>
+
+            <h1>Menu</h1>
+<ul class="list-group" id="menu_items">
+            <li class="list-group-item menu-list-item" draggable="true">
+            <div class="form-group">
+                <label>Link text</label>
+                <input type="text" class="form-control item_text" placeholder="Enter text" value="This is a link">
+                <small class="form-text text-muted">When clicked, this text will redirect to the specified page.</small>
+            </div>
+            <div class="form-group">
+                <label>URL</label>
+                <input type="url" class="form-control item_url" placeholder="https://example.com" value="https://example.com">
+                <small class="form-text text-muted">Page URL to redirect to after clicking the link.</small>
+            </div>
+            <button type="button" class="btn btn-block btn-outline-dark delete-btn">Delete link</button>
+        </li>
+            <li class="list-group-item menu-list-item" draggable="true">
+            <div class="form-group">
+                <label>Link text</label>
+                <input type="text" class="form-control item_text" placeholder="Enter text" value="This is another link">
+                <small class="form-text text-muted">When clicked, this text will redirect to the specified page.</small>
+            </div>
+            <div class="form-group">
+                <label>URL</label>
+                <input type="url" class="form-control item_url" placeholder="https://example.com" value="https://example.com">
+                <small class="form-text text-muted">Page URL to redirect to after clicking the link.</small>
+            </div>
+            <button type="button" class="btn btn-block btn-outline-dark delete-btn">Delete link</button>
+        </li>
+    </ul>
+<button type="button" id="add_item" class="btn btn-block btn-outline-dark mt-3"><span class="icon-plus"></span> Add item</button>
+
+<button type="button" id="save_menu" class="btn btn-block btn-outline-dark mt-3"><span class="icon-check"></span> Save</button>
+
+<!-- Hidden Form for submitting menu items -->
+<form action="menu.html" method="post" id="menu_form">
+    <input type="hidden" name="menu_list" value="" id="menu_list">
+</form>
+
+<div id="item_template">
+    <li class="list-group-item menu-list-item" draggable="true">
+        <div class="form-group">
+            <label>Link text</label>
+            <input type="text" class="form-control item_text" placeholder="Enter text">
+            <small class="form-text text-muted">When clicked, this text will redirect to the specified page.</small>
+        </div>
+        <div class="form-group">
+            <label>URL</label>
+            <input type="url" class="form-control item_url" placeholder="https://example.com">
+            <small class="form-text text-muted">Page URL to redirect to after clicking the link.</small>
+        </div>
+        <button type="button" class="btn btn-block btn-outline-dark delete-btn">Delete link</button>
+    </li>
+</div>
+
+<script>
+/*
+ * Drag and drop behaviour for list items
+ * 
+ * Source: https://stackoverflow.com/a/27796275
+ */ 
+// Currently dragged element
+var dragSrcEl = null;
+
+// Data of the dragged element
+var draggedData = {
+    text: '',
+    url: ''
+};
+
+// Start dragging
+function handleDragStart(e) {
+    this.style.opacity = '0.4';
+
+    dragSrcEl = this;
+
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', this.innerHTML);
+
+    // Set dragged data for data swapping
+    draggedData = {
+        text: $(this).find('.item_text').val(),
+        url: $(this).find('.item_url').val()
+    };
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault();
+    }
+
+    e.dataTransfer.dropEffect = 'move';
+
+    return false;
+}
+
+function handleDragEnter(e) {
+    this.classList.add('over');
+}
+
+function handleDragLeave(e) {
+    this.classList.remove('over');
+}
+
+// Handle item drop
+function handleDrop(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+
+    // Check if not dropping on same element
+    if (dragSrcEl != this) {
+        // Swap input values
+        // Set dragged element inputs to current inputs
+        $(dragSrcEl).find('.item_text').val(
+            $(this).find('.item_text').val()
+        );
+        $(dragSrcEl).find('.item_url').val(
+            $(this).find('.item_url').val()
+        );
+
+        // Set current inputs to dragged element inputs
+        $(this).find('.item_text').val(draggedData.text);
+        $(this).find('.item_url').val(draggedData.url);
+    }
+
+    // Set opacity back to 100%
+    dragSrcEl.style.opacity = '1';
+
+    return false;
+}
+
+function handleDragEnd(e) {
+    [].forEach.call(cols, function (col) {
+        col.classList.remove('over');
+    });
+}
+
+// Add listeners
+var cols = document.querySelectorAll('#menu_items .list-group-item');
+[].forEach.call(cols, function (col) {
+    col.addEventListener('dragstart', handleDragStart, false);
+    col.addEventListener('dragenter', handleDragEnter, false)
+    col.addEventListener('dragover', handleDragOver, false);
+    col.addEventListener('dragleave', handleDragLeave, false);
+    col.addEventListener('drop', handleDrop, false);
+    col.addEventListener('dragend', handleDragEnd, false);
+});
+
+
+/*
+ * Convert menu items to JSON array 
+ */
+function getItemList() {
+    let items = [];
+    $('#menu_items .list-group-item').each(function() {
+        items.push({
+            'text': $(this).find('.item_text').val(),
+            'url': $(this).find('.item_url').val()
+        });
+    });
+    return JSON.stringify(items);
+}
+
+function removeItem() {
+    this.parentElement.remove();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Add item button
+    $('#add_item').click(function() {
+        let element = $('#item_template').children().first().clone();
+        let col = element.get()[0];
+
+        // Add event listeners for dragging
+        col.addEventListener('dragstart', handleDragStart, false);
+        col.addEventListener('dragenter', handleDragEnter, false)
+        col.addEventListener('dragover', handleDragOver, false);
+        col.addEventListener('dragleave', handleDragLeave, false);
+        col.addEventListener('drop', handleDrop, false);
+        col.addEventListener('dragend', handleDragEnd, false);
+
+        // Add event listener for deleting
+        $(col).find('.delete-btn').click(removeItem);
+
+        $('#menu_items').append(element);
+    });
+
+    // Add event listeners for deleting
+    $('.delete-btn').click(removeItem);
+
+    // Save menu
+    $('#save_menu').click(function() {
+        $('#menu_list').val(getItemList());
+        $('#menu_form').submit();
+    });
+});
+</script>
+
+<style>
+.menu-list-item {
+    cursor: grab;
+}
+#item_template {
+    display: none;
+}
+</style>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+
+</body>
+
+</html>
