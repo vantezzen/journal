@@ -13,11 +13,14 @@ vendor/
 package-lock.json
 composer.lock
 
+# Ignore Laravel Blade cache
+core/cache/*
+!core/cache/.gitkeep
+
 # Ignore all themes exept default
 themes/*
 !themes/default
 
 # Other files
 direct.php
-core/cache/*
 .DS_Store
