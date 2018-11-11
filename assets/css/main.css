@@ -26,3 +26,13 @@ body {
     border-color: #212121;
     border-radius: 0.1rem;
 }
+
+.changelog {
+    background-color: #EBEBEB;
+    padding: 15px 15px;
+    border-radius: .2rem;
+}
+.changelog h1 {
+    font-size: 1rem;
+    font-weight: bold;
+}

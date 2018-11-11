@@ -25,12 +25,19 @@ header("Location: ./");
 ob_end_flush();
 flush();
 
+// Set timeout to 1h
+ini_set('max_execution_time', 3600);
+set_time_limit(3600);
+
 $core->component('database')->table('settings')->insert([
     'key' => 'uploading',
     'value' => time()
 ])->save();
 
 // Regenerate static files
+$core->component('convert')->all();
+
+// Upload static files
 $core->component('upload')->upload();
 
 $core->component('database')->table('settings')->select(['key' => 'uploading'])->delete()->save();

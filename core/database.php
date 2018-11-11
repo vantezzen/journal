@@ -58,12 +58,13 @@ class database {
      * 
      * @return void
      */
-    private function initTables(): void {
+    private function initTables() {
         $this->tables['posts'] = new Table('posts', [
             'id',
             'title',
             'text',
             'revision',
+            'published',
             'created',
             'updated'
         ], false, ['folder' => 'tables/']);
@@ -71,6 +72,11 @@ class database {
         $this->tables['settings'] = new Table('settings', [
             'key',
             'value'
+        ], false, ['folder' => 'tables/']);
+
+        $this->tables['menu'] = new Table('menu', [
+            'text',
+            'url'
         ], false, ['folder' => 'tables/']);
     }
 
@@ -80,7 +86,7 @@ class database {
      * 
      * @return void
      */
-    private function loadSettings(): void {
+    public function loadSettings() {
         $data = $this->tables['settings']->data();
         $settings = [];
 

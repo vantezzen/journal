@@ -41,7 +41,7 @@ class convert {
      * 
      * @return void
      */
-    public function clearFolder(): void {
+    public function clearFolder() {
         $this->core->component('file')->deleteFolder('public/', false);
     }
 
@@ -50,7 +50,7 @@ class convert {
      * 
      * @return void
      */
-    public function copyAssets(): void {
+    public function copyAssets() {
         $this->core->component('file')->copyFolder('themes/' . $this->core->setting('theme') . '/assets/', 'public/assets/');
     }
 
@@ -59,22 +59,50 @@ class convert {
      * 
      * @return void
      */
-    public function all(): void {
+    public function all() {
         // Clear folder before generating
         $this->clearFolder();
 
         // Copy assets folder
         $this->copyAssets();
 
+        // Intialize variables
         $files = [];
+        $posts = $this->core->component('database')->table('posts')->select(['published' => '1'])->selected();
 
         // Generate Homepage
         $index = $this->core->component('pages')->home();
         $this->core->component('file')->save('public/index.html', $index);
         $files[] = 'index.html';
 
+        // Apply pagination if enabled
+        if ($this->core->setting('pagination') == 'yes') {
+            $steps = $this->core->setting('pagination_steps');
+            if (!is_numeric($steps)) {
+                $steps = 20;
+            }
+
+            $num = count($posts);
+        
+            // Create new pages while there are still posts left
+            for ($i = 1; ($i * $steps) < $num; $i++) {
+                $page = $this->core->component('pages')->home($i);
+                $this->core->component('file')->save('public/home-' . $i . '.html', $page);
+                $files[] = 'home-' . $i . '.html';
+
+                // Stop if $i bigger 200 - there is probably an error
+                if ($i > 200) {
+                    echo "Oh! We couldn't generate your blog as there was an error while generating:<br />";
+                    echo "There were over 200 home pages to generate - this is probably an error.<br />";
+                    echo "Journal has stopped generating new files to save your webserver from crashing.<br />";
+                    echo "Debugging Info: <br />";
+                    var_dump($i, $steps, $num, is_numeric($steps), $this->core->version);
+                    exit();
+                }
+            }
+        }
+
         // Generate Posts
-        $posts = $this->core->component('database')->tableData('posts');
         foreach($posts as $post) {
             $page = $this->core->component('pages')->post($post);
             $path = $this->core->component('url')->get($post);
@@ -90,6 +118,7 @@ class convert {
 
         // Generate info.json
         $info = [
+            'generator' => 'Journal',
             'last_update' => time(),
             'files' => $files
         ];

@@ -20,6 +20,34 @@ $app->get('/', function($request, $response, $args) use ($core) {
     return $core->component('dashboard')->renderIndex($url);
 });
 
+// Toggle automatic uploading
+$app->post('/', function($request, $response, $args) use ($core) {
+    // Change setting
+    $db = $core->component('database')->table('settings');
+
+    $db->select(['key' => 'au_enabled']);
+    if (count($db->selected()) == 0) {
+        $db->insert(['key' => 'au_enabled', 'value' => 0]);
+    }  else {
+        $current = $db->selected()[0]['value'];
+        $db->update(['value' => (!$current)]);
+    }
+    $db->save();
+
+    // Reload settings
+    $core->component('database')->loadSettings();
+
+    if ($core->setting('au_enabled') == 1) {
+        // Redirect to upload page
+        $url = $request->getUri()->getBaseUrl();
+        return $response->withHeader('Location', $url . '/perform_upload.php');
+    } else {
+        // Redirect to index page
+        $url = $request->getUri()->getBaseUrl();
+        return $response->withHeader('Location', $url);
+    }
+});
+
 
 // Write/create/edit post
 $app->get('/write[/[{edit}[/]]]', function($request, $response, $args) use ($core) {
@@ -35,7 +63,7 @@ $app->get('/write[/[{edit}[/]]]', function($request, $response, $args) use ($cor
 });
 
 // Save post
-$app->post('/save[/]', function($request, $response, $args) use ($core) {
+$app->post('/save[/[{isBackground}[/[{publish}[/]]]]]', function($request, $response, $args) use ($core) {
     $data = $request->getParsedBody();
 
     // Check if new post or edit existing post
@@ -71,6 +99,12 @@ $app->post('/save[/]', function($request, $response, $args) use ($core) {
         $data['created'] = time();
     }
 
+    if (isset($args['publish']) && $args['publish'] == '1') {
+        $data['published'] = '1';
+    } else if (isset($args['publish']) && $args['publish'] == '0') {
+        $data['published'] = '0';
+    }
+
     // Insert or update table
     if ($edit) {
         $core
@@ -90,6 +124,12 @@ $app->post('/save[/]', function($request, $response, $args) use ($core) {
     // Regenerate static files
     $core->component('convert')->all();
 
+    // Upload to server if published and not in background
+    $published = $core->component('database')->table('posts')->select(['id' => $id])->selected()[0]['published'];
+    if ($published && (!isset($args['isBackground']) || $args['isBackground'] != '1')) {
+        $core->component('upload')->post($data);
+    }
+
     // Redirect to edit page
     $url = $request->getUri()->getBaseUrl();
     return $response->withHeader('Location', $url . '/write/' . $id);
@@ -101,15 +141,22 @@ $app->post('/delete[/]', function($request, $response, $args) use ($core) {
 
     $id = $data['delete'];
 
-    $core
+    $post = $core
         ->component('database')
         ->table('posts')
         ->select(['id' => $id])
+        ->selected()[0];
+    $core
+        ->component('database')
+        ->table('posts')
         ->delete()
         ->save();
 
     // Regenerate static files
     $core->component('convert')->all();
+
+    // Update server
+    $core->component('upload')->delete($post);
 
     // Redirect to homepage
     $url = $request->getUri()->getBaseUrl();
@@ -121,6 +168,45 @@ $app->post('/delete[/]', function($request, $response, $args) use ($core) {
 $app->get('/uploading[/]', function($request, $response, $args) use ($core) {
     $url = $request->getUri()->getBaseUrl();
     return $core->component('dashboard')->renderUploading($url);
+});
+
+// Menu page
+$app->get('/menu[/]', function($request, $response, $args) use ($core) {
+    $url = $request->getUri()->getBaseUrl();
+    return $core->component('dashboard')->renderMenu($url);
+});
+
+// Save menu
+$app->post('/menu[/]', function($request, $response, $args) use ($core) {
+    $data = $request->getParsedBody();
+
+    $db = $core->component('database')->table('menu');
+
+    $items = json_decode($data['menu_list'], true);
+    $db->truncate();
+
+    foreach($items as $item) {
+        $db->insert($item);
+    }
+    $db->save();
+
+    // Regenerate static files
+    $core->component('convert')->all();
+
+    $url = $request->getUri()->getBaseUrl();
+
+    // Check if need to upload blog
+    if (
+        $core->setting('upload_uploader') !== 0 &&      // Uploader specified
+        (!$core->component('upload')->serverHasBlog()  // Server doesn't have blog on it
+        || (!isset($oldsettings['theme']) && $data['theme'] !== 'default') // Theme has been set initially
+        || (isset($oldsettings['theme']) && $oldsettings['theme'] !== $data['theme'])) // Theme has been changed
+    ) {
+        // Redirect to upload blog
+        return $response->withHeader('Location', $url . '/perform_upload.php');
+    } else {
+        return $response->withHeader('Location', $url . '/menu');
+    }
 });
 
 
@@ -135,6 +221,7 @@ $app->post('/settings[/]', function($request, $response, $args) use ($core) {
     $data = $request->getParsedBody();
 
     $db = $core->component('database')->table('settings');
+    $oldsettings = $core->settings;
 
     // Update settings table with new data
     foreach($data as $key => $value) {
@@ -146,13 +233,25 @@ $app->post('/settings[/]', function($request, $response, $args) use ($core) {
         }
     }
     $db->save();
+    
+    // Reload settings
+    $core->component('database')->loadSettings();
 
-    // Regenerate static files
-    $core->component('convert')->all();
-
-    // Redirect back to settings page
-    $url = $request->getUri()->getBaseUrl();
-    return $response->withHeader('Location', $url . '/settings');
+    // Check if need to upload blog
+    if (
+        $core->setting('upload_uploader') !== 0 &&      // Uploader specified
+        (!$core->component('upload')->serverHasBlog()  // Server doesn't have blog on it
+        || (!isset($oldsettings['theme']) && $data['theme'] !== 'default') // Theme has been set initially
+        || (isset($oldsettings['theme']) && $oldsettings['theme'] !== $data['theme'])) // Theme has been changed
+    ) {
+        // Redirect to upload blog
+        $url = $request->getUri()->getBaseUrl();
+        return $response->withHeader('Location', $url . '/perform_upload.php');
+    } else {
+        // Redirect to generate page to regenerate pages
+        $url = $request->getUri()->getBaseUrl();
+        return $response->withHeader('Location', $url . '/generate');
+    }
 });
 
 

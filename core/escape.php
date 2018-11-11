@@ -40,7 +40,7 @@ class escape {
      * Escape a string
      * 
      * This will:
-     * - Escape HTML Entities using htmlentities
+     * - Escape HTML Entities using htmlspecialchars
      * - Convert line breaks to <br />
      * - Remove all remaining line breaks
      * 
@@ -48,7 +48,7 @@ class escape {
      * @return string Escaped string
      */
     public function escape(string $string): string {
-        $string = htmlentities($string);
+        $string = htmlspecialchars($string);
         $string = nl2br($string);
         $string = str_replace(["\r\n", "\r", "\n"], '', $string);
 

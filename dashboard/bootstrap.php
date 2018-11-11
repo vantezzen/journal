@@ -13,7 +13,12 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 // Composer autoload
-require 'vendor/autoload.php';
+if (file_exists('vendor/autoload.php')) {
+    require 'vendor/autoload.php';
+} else {
+    echo "Could not find 'vendor/autoload.php'. Please make sure you have executed 'composer install' to install dependencies and create the autoloader.";
+    exit();
+}
 
 // Use all core parts
 use core\core;
@@ -28,6 +33,7 @@ use core\comments;
 use core\update;
 use core\file;
 use core\upload;
+use core\intelliformat;
 
 use core\uploaders\ftp;
 use core\uploaders\sftp;
@@ -48,6 +54,7 @@ new escape($core);
 new comments($core);
 new update($core);
 new file($core);
+new intelliformat($core);
 new upload($core);
 
 // Uploaders
@@ -55,9 +62,3 @@ new ftp($core);
 new sftp($core);
 new s3($core);
 new dospaces($core);
-
-foreach(glob('extensions/*.php') as $extension) {
-    $class_name = str_replace('.php', '', basename($extension));
-    include $extension;
-    new $class_name($core);
-}

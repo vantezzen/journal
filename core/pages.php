@@ -43,38 +43,59 @@ class pages {
     /**
      * Generate the static homepage
      * 
+     * @param int $page Page to generate (if pagination is enabled)
      * @return string Page code
      */
-    public function home(): string {
+    public function home(int $page = 0): string {
         // Get posts from database and reverse (newest posts on top)
-        $posts = $this->core->component('database')->tableData('posts');
+        $posts = $this->core->component('database')->table('posts')->select(['published' => '1'])->selected();
         $posts = array_reverse($posts);
+
+        $prevPageAvailible = false;
+        $nextPageAvailible = false;
+
+        // Apply pagination if enabled
+        if ($this->core->setting('pagination') == 'yes') {
+            $steps = $this->core->setting('pagination_steps');
+            if (!is_numeric($steps)) {
+                $steps = 20;
+            }
+            
+            $start = $page * $steps;
+
+            // Get information about previous and next page
+            $prevPageAvailible = ($page !== 0);
+            $nextPageAvailible = (count($posts) > ($start + $steps));
+
+            $prevPage = ($page - 1) == 0 ? 'index.html' : 'home-' . ($page - 1) . '.html';
+            $nextPage = 'home-' . ($page + 1) . '.html';
+
+            // Get new posts array
+            $posts = array_slice($posts, $start, $steps);
+        }
 
         // Add additional information to posts
         foreach($posts as $key => $post) {
+            if (strlen(trim($post['text'])) > 200) {
+                $posts[$key]['trimmedText'] = substr($post['text'], 0, 197) . '...';
+            } else {
+                $posts[$key]['trimmedText'] = $post['text'];
+            }
             $posts[$key]['path'] = $this->core->component('url')->get($post);
             $posts[$key]['url'] = $this->core->component('url')->getFull($post);
-            $posts[$key]['trimmedText'] = function($length) use ($post) {
-                $length = trim($length);
-                if (strlen($post['text']) > $length) {
-                    return substr($post['text'], 0, $length - 3) . '...';
-                } else {
-                    return $post['text'];
-                }
-            };
+            $posts[$key]['text'] = $this->core->component('intelliformat')->format($post['text']);
         }
 
         // Generate page
-        $template = $this->core->component('generator')->getFile('home');
-        $render = $this->core->component('generator')->render($template, [
-            'post' => $posts,
-            'title' => $this->core->setting('title'),
-            'description' => $this->core->setting('description'),
-            'copyright' => $this->core->setting('copyright')
-        ]);
-        $page = $this->core->component('generator')->applyBase($render);
+        $render = $this->core->component('generator')->render('home', [
+            'posts' => $posts,
 
-        return $page;
+            'pagination' => $this->core->setting('pagination') == 'yes',
+            'prev' => $prevPageAvailible ? $prevPage : false,
+            'next' => $nextPageAvailible ? $nextPage : false
+        ]);
+
+        return $render;
     }
 
     /**
@@ -84,7 +105,7 @@ class pages {
      * @return string Page code
      */
     public function post(array $post): string {
-        $template = $this->core->component('generator')->getFile('post');
+        $post['text'] = $this->core->component('intelliformat')->format($post['text']);
 
         // Collect data for render
         $data = array_merge($post, [
@@ -94,10 +115,9 @@ class pages {
         ]);
 
         // Generate page
-        $render = $this->core->component('generator')->render($template, $data);
-        $page = $this->core->component('generator')->applyBase($render);
+        $render = $this->core->component('generator')->render('post', $data);
 
-        return $page;
+        return $render;
     }
 
     /**

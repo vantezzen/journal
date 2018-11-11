@@ -12,12 +12,16 @@
 
     <!-- Styles -->
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> 
-    <link href="{{ url }}/assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{ url }}/assets/css/simple-line-icons.css" rel="stylesheet">
-    <link href="{{ url }}/assets/css/sidebar.css" rel="stylesheet">
-    <link href="{{ url }}/assets/css/style.css" rel="stylesheet">
-    <link href="{{ url }}/assets/css/write.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/simple-line-icons.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/sidebar.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/main.css" rel="stylesheet">
+    <link href="{{ $base }}/assets/css/write.css" rel="stylesheet">
+    @yield('styles')
 
+    <script>
+        window.Journal = {!! json_encode($settings) !!};
+    </script>
 </head>
 
 <body>
@@ -28,28 +32,31 @@
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
                 <li class="sidebar-brand">
-                    <a href="{{ url }}">
+                    <a href="{{ $base }}">
                         <span class="icon-pencil"></span> Journal
                     </a>
                 </li>
                 <li>
-                    <a href="{{ url }}"><span class="icon-layers"></span> Posts</a>
+                    <a href="{{ $base }}"><span class="icon-layers"></span> Posts</a>
                 </li>
                 <li>
-                    <a href="{{ url }}/write"><span class="icon-note"></span> Create new</a>
+                    <a href="{{ $base }}/write"><span class="icon-note"></span> Create new</a>
                 </li>
                 <li>
-                    <a href="{{ url }}/settings">
+                    <a href="{{ $base }}/menu"><span class="icon-list"></span> Menu</a>
+                </li>
+                <li>
+                    <a href="{{ $base }}/settings">
                         <span class="icon-settings"></span> 
-                        {{# update }}
+                        @if ($update)
                             <span class="update-notification" title="New update availible"></span>
-                        {{/ update }}
+                        @endif
                         Settings
                     </a>
                 </li>
                 <hr>
                 <li>
-                    <a href="{{ url }}/public/"><span class="icon-eye"></span> View static blog</a>
+                    <a href="{{ $base }}/public/"><span class="icon-eye"></span> View static blog</a>
                 </li>
                 <!-- <li>
                     <a href="#"><span class="icon-logout"></span> Logout</a>
@@ -67,7 +74,7 @@
                 </button>
             </nav>
 
-            {{{ content }}}
+            @yield('content')
         </div>
         <!-- /#page-content-wrapper -->
 
@@ -75,8 +82,9 @@
     <!-- /#wrapper -->
 
     <!-- Bootstrap core JavaScript -->
-    <script src="{{ url }}/assets/js/jquery.min.js"></script>
-    <script src="{{ url }}/assets/js/bootstrap.min.js"></script>
+    <script src="{{ $base }}/assets/js/jquery.min.js"></script>
+    <script src="{{ $base }}/assets/js/bootstrap.min.js"></script>
+    @yield('scripts')
 
     <!-- Menu Toggle Script -->
     <script>

@@ -17,6 +17,13 @@ namespace core;
 
 class core {
     /**
+     * Current Journal Core version
+     * 
+     * @var string
+     */
+    public $version = "1.1.0";
+
+    /**
      * User settings
      * 
      * These settings will be filled from core\database once all tables have
@@ -25,6 +32,42 @@ class core {
      * @var array
      */
     public $settings;
+
+    /**
+     * Availible setting keys
+     * 
+     * @var array
+     */
+    public $availibleSettings = [
+        'installation_done',
+        'search_updates',
+        'intelliformat_links',
+        'intelliformat_markdown',
+        'intelliformat_headings',
+        'intelliformat_code',
+        'title',
+        'description',
+        'url',
+        'language',
+        'copyright',
+        'url_format',
+        'theme',
+        'comments_provider',
+        'comments_identifier',
+        'upload_uploader',
+        'upload_server',
+        'upload_port',
+        'upload_username',
+        'upload_password',
+        'upload_path',
+        'upload_region',
+        'upload_bucket',
+        'pagination',
+        'pagination_steps',
+        'version_checked',
+        'newest_version',
+        'au_enabled'
+    ];
 
     /**
      * User settings fallback
@@ -42,10 +85,15 @@ class core {
         'language' => 'EN',
         'copyright' => '',
         'url_format' => 2,
+        'pagination' => 'no',
+        'pagination_steps' => 20,
         'comments_provider' => 0,
         'upload_uploader' => 0,
         'upload_port' => '',
-        'search_updates' => 'yes'
+        'au_enabled' => true,
+        'search_updates' => 'yes',
+        'intelliformat_markdown' => 'no',
+        'intelliformat_code' => 'no'
     ];
 
     /**
@@ -69,7 +117,7 @@ class core {
      * @param $component Instance of the component
      * @return void
      */
-    public function registerComponent(string $name, $component): void {
+    public function registerComponent(string $name, $component) {
         $this->components[$name] = $component;
     }
 

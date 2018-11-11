@@ -143,8 +143,17 @@ class update {
      * @return string Version
      */
     public function newestVersion(): string {
+        // Check if newest version is already in memory cache
         if ($this->newestVersion) {
             return $this->newestVersion;
+        }
+
+        // Check if newest version is already in database cache and is still valid (24h)
+        if (
+            isset($this->core->settings['version_checked']) &&
+            $this->core->setting('version_checked') > (time() - (60 * 60 * 24))
+        ) {
+            return $this->core->setting('newest_version');
         }
 
         $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/journal/releases');
@@ -154,7 +163,17 @@ class update {
         } else {
             $version = '1.0.0';
         }
+
+        // Save in memory cache
         $this->newestVersion = $version;
+
+        // Save in database cache
+        $db = $this->core->component('database')->table('settings');
+        $db->select(['key' => 'version_checked'])->delete();
+        $db->insert(['key' => 'version_checked', 'value' => time()]);
+        $db->select(['key' => 'newest_version'])->delete();
+        $db->insert(['key' => 'newest_version', 'value' => $version]);
+        $db->save();
 
         return $version;
     }
@@ -187,6 +206,7 @@ class update {
      * @return void
      */
     public function update() {
+        return false;
         // Get download URL
         $resp = $this->curlRequest('https://api.github.com/repos/vantezzen/journal/releases');
         $data = json_decode($resp, true);

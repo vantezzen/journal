@@ -4,36 +4,46 @@ Table of Contents
 - [About Journal](#about-journal)
 - [Features](#features)
 - [Installing Journal](#installing-journal)
+- [Demo](#demo)
 - [Screenshots](#screenshots)
 - [Security](#security)
 - [Official themes](#official-themes)
 - [Comments](#comments)
 - [Automatic uploading](#automatic-uploading)
+- [IntelliFormat](#intelliformat)
+- [Markdown support](#markdown-support)
 - [How can I publish my blog on...](#how-can-i-publish-my-blog-on)
     - [...my (S)FTP server, AWS S3 Bucket or DigitalOcean Spaces](#my-sftp-server-aws-s3-bucket-or-digitalocean-spaces)
     - [...Netlify](#netlify)
     - [...GitHub Pages](#github-pages)
     - [...Dropbox or my WebDAV server](#dropbox-or-my-webdav-server)
 - [Custom themes](#custom-themes)
-        - [base.html](#basehtml)
-        - [home.html](#homehtml)
-        - [post.html](#posthtml)
+    - [Variables](#variables)
+    - [Files and folders](#files-and-folders)
+        - [home.blade.php](#homebladephp)
+        - [post.blade.php](#postbladephp)
         - [assets/](#assets)
+    - [Supporting Journal features in custom themes](#supporting-journal-features-in-custom-themes)
+        - [Menu support](#menu-support)
+        - [Pagination support](#pagination-support)
     - [Theme watcher](#theme-watcher)
+- [Backing up](#backing-up)
 - [Upcomming features](#upcomming-features)
 - [License](#license)
 
 # About Journal
-Journal is a simple CMS for static blogs. It aims to simplify the creation and maintenance of a blog that only uses static html, js and css files.
+Journal is a simple CMS for static blogs. It aims to simplify the creation and maintenance of blogs, letting the author focus on writing posts instead of wasting time on the CMS.
 
 # Features
 - Simple, minimalistic dashboard
-- Easy-to-use dashboard
 - Easy installation
 - [Automatic upload of static blog files to server](#automatic-uploading)
 - No SQL-/Database-Server required
 - [Comment support through Disqus](#comments)
+- [Intelligent post formatting](#intelliformat)
+- [Markdown support](#markdown-support)
 - Custom theme support
+- Custom theme creation with [Laravel Blade](https://laravel.com/docs/5.7/blade) views
 - Easy theme developement through [theme watcher](#theme-watcher)
 - Build-in updater
 
@@ -45,6 +55,9 @@ Journal is a simple CMS for static blogs. It aims to simplify the creation and m
     - tables/
 4. Open index.php through your webserver and start using Journal
 5. Once you create a new post you'll see files in the public/ folder. This is where Journal will put your static blog files. You can now upload these files to a static webserver.
+
+# Demo
+You can use a static demo of the Journal dashboard at [https://vantezzen.github.io/journal/](https://vantezzen.github.io/journal/).
 
 # Screenshots
 <p align="center"><img src="assets/img/screenshot_1.png"></p>
@@ -76,6 +89,20 @@ Journal currently supports the following upload methods:
 
 You should now see a "Upload files to server" button on your "Posts" page. When clicked, Journal will upload your current static files to your server, overwriting the old ones but not deleting any other files.
 
+# IntelliFormat
+Journal uses a system called `IntelliFormat` to apply different formatting methods to the posts.
+These formatting methods are:
+- Links: Automatically convert Links into clickable HTML-Links
+- Headings: Automatically find headings and make them bigger
+- Markdown: Convert Markdown formatting to HTML
+
+The goal of IntelliFormats formatting methods (except Markdown) is to intelligentely and automatically apply formatting to posts without the user having to add them. This is why - by default - IntelliFormats Markdown formatter is disabled.
+
+All formatting methods can be enabled and disabled through Settings > Formatting
+
+# Markdown support
+Journal supports Markdown through the PHP library [parsedown](https://github.com/erusev/parsedown). Markdown formatting needs to be enabled first through Settings > Formatting > Markdown. When enabling Markdown it is highly recommended to disable all other [IntelliFormat](#intelliformat) formatters as they can interfere with the Markdown formatting.
+
 # How can I publish my blog on...
 After creating your blog you can publish it using different methods - here are the most common ones:
 ## ...my (S)FTP server, AWS S3 Bucket or DigitalOcean Spaces
@@ -92,98 +119,89 @@ See [How can I publish my blog on Netlify](#netlify).
 Dropbox and WebDAV support will be added in one of the next versions of Journal.
 
 # Custom themes
-Journal allows for the creation of custom themes. It utilizes [Mustache](https://mustache.github.io/) to turn themes into pages. To see an example theme, look at `themes/default/`.
-Every theme has its own folder in `themes/` with its name. It is highly adviced to have a basic understanding of the syntax of [Mustache](https://mustache.github.io/) before creating custom themes.
+Journal allows for the creation of custom themes. It utilizes [Laravel Blade](https://laravel.com/docs/5.7/blade) to turn themes into pages. To see an example theme, look at `themes/default/`.
+Every theme has its own folder in `themes/` with its name. It is highly adviced to have a basic understanding of the syntax of [Laravel Blade](https://laravel.com/docs/5.7/blade) before creating custom themes.
+
+## Variables
+Journal settings are availible in custom themes by their internal name (look at `tables/settings.csv` for setting names). There are some additional variables (mainly `$menu`) availible.
+
+Most important variables are:
+- $title : Title of the page
+- $description : Blog description
+- $copyright : Blog copyright text
+- $language : Language code of the blogs language (for use in html lang tag)
+- $url : URL of the final blog (e.g. https://example.com)
+- [$menu](#menu-support) : Menu array
+
+
+## Files and folders
 
 Journal requires the following files and folders to be existent in a themes folder:
 
-### base.html
-This files holds a scaffold and will be wrapped around every other page. Journal will also require you to have a '{{{ content }}}' tag in your base.html in which other pages will be inserted. 
-Availible variables are:
-- content : Code for the page that will be inserted
-- title : Title of the page
-- description : Blog description
-- copyright : Blog copyright text
-- language : Language code of the blogs language (for use in html lang tag)
-- url : URL of the final blog (e.g. https://example.com)
-  
-Availible methods are:
-- include : Include another .html file
-  
-Example base.html
-```html
-<!DOCTYPE html>
-<html lang="{{ language }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{ title }}</title>
-</head>
-    <body>
-        {{# include }}
-            parts/nav
-        {{/ include }}
+### home.blade.php
+This file will be used to create your blog homepage. You should loop through the `$posts` array to create a list of posts. This array will be pre-shortened if pagination is enabled.
+You should add [support for pagination](#pagination-support) to this file.
 
-        {{{ content }}}
+Additional variables availible in this view are:
+- $posts : Array of all posts
+- [$pagination](#pagination-support) : True, if pagination is activated
+- [$prev](#pagination-support) : Previous page of pagination
+- [$next](#pagination-support) : Next page of pagination
 
-        {{# include }}
-            parts/footer
-        {{/ include }}
-    </body>
-</html>
-```
-### home.html
-This file will be used to create your blog homepage. A `post` area should be created. This area will be repeated for every post. This page will be wrapped inside base.html.
-
-Availible variables are:
-- post : Array of all posts
-- title : Blog title
-- description : Blog description
-- copyright : Blog copyright text
-
-Inside `post` you can use:
-- title : Title of the post. This should always be inserted using triple-brackets as the title has already been escaped
-- text : Full post text.This should always be inserted using triple-brackets as the title has already been escaped
-- `trimmedText` method : Only get a trimmed text of sepecified length (see example)
+Each element of `$posts` contains:
+- title : Title of the post. This should always be inserted unescaped as the title has already been escaped
+- text : Full post text. This should always be inserted unescaped as the text has already been escaped
+- trimmedText : Trimmed text to 200 characters
 - path : Relative path to the post (e.g. my-post.html)
-- url : Absolute URL to the psot (e.g. https://example.com/my-post.html)
+- url : Absolute URL to the post (e.g. https://example.com/my-post.html)
 - id : ID of the post
 
-Example home.html
+Example home.blade.php
 ```html
-<h1>Home</h1>
+@extends('base')
 
-{{# post }}
-<h1>{{{ title }}}</h1>
-<p>{{# trimmedText}}150{{/ trimmedText}}</p>
-<a href="{{ path }}">Open post</a>
-<a href="{{ url }}">Absolute URL</a>
-{{/ post }}
+@section('content')
+    @foreach ($posts as $post)
+        <h1>{!! $post['title'] !!}</h1>
+        <p>{!! $post['trimmedText'] !!}</p>
+        <a href="{{ $post['path'] }}">Open post</a>
+        <a href="{{ $post['url'] }}">Absolute URL</a>
+    @endforeach
 
-{{^ post }}
-<b>There are no posts yet!</b>
-{{/ post }}
+    @if($pagination)
+        <br />
+        @if($prev)
+            <a href="{{ $prev }}">&lt;Previous page</a>
+        @endif
+        @if ($next)
+            <a href="{{ $next }}">Next page &gt;</a>
+        @endif
+    @endif
+@endsection
 ```
-### post.html
-This file will be used to create pages for all posts. This page will be wrapped inside base.html.
+### post.blade.php
+This file will be used to create pages for all posts.
 
-Availible variables are:
-- title : Title of the post. This should always be inserted using triple-brackets as the title has already been escaped
-- text : Full post text.This should always be inserted using triple-brackets as the title has already been escaped
-- path : Relative path to the post (e.g. my-post.html)
-- url : Absolute URL to the psot (e.g. https://example.com/my-post.html)
-- comments : Code for comment section*
+Additional variables availible in this view are:
+- $title : Title of the post. This should always be inserted unescaped as the title has already been escaped
+- $text : Full post text. This should always be inserted unescaped as the title has already been escaped
+- $path : Relative path to the post (e.g. my-post.html)
+- $comments : Code for comment section. This should always be inserted unescaped.
 
-You should add a triple-bracketed `comments` to your post.html to add support for a comment section. This will be replaced with the comments section of the chosen comment provider when generating static pages. 
+*This will be replaced with the comments section of the chosen comment provider when generating static pages. 
 
-Example post.html
+Example post.blade.php
 ```html
-<h1>{{{ title }}}</h1>
-<p>{{{ text }}}</p>
+@extends('base')
 
-{{{ comments }}}
+@section('content')
+<h1>{!! $title !!}</h1>
+<p>{!! $text !!}</p>
+
+{!! $comments !!}
+@endsection
 ```
+
 ### assets/
 The assets folder should contain all additional assets that are required for the theme (i.e. css and js files). This folder will be copied to public/assets/ automatically.
 
@@ -200,6 +218,35 @@ assets/
         bootstrap.min.js
 ```
 
+
+## Supporting Journal features in custom themes
+Journal ships with features that allow you to customize the theme without having to edit the theme source files. In order for these features to work, the theme has to have build-in support - otherwise these features can't be used.
+
+### Menu support
+Journal has a build-in menu editor that allows adding custom links to the main page menu. To support menues, add a `menu` area to on of your base files. Inside this area you can use the variables `url` and `text` to create the links
+
+Example menu:
+```html
+@foreach ($menu as $menuItem)
+    <a href="{{ $menuItem['url'] }}">{{ $menuItem['text'] }}</a>
+@endforeach
+```
+
+### Pagination support
+Journal allows you to add automatic pagination to your page. To implement pagination into your theme, add a `pagination` area to your [home.blade.php](#homebladephp). This area will only be shown if pagination is activated. Inside the `pagination` area add a `prev` and `next` area for the previous and next page. Inside these you can use the variables `prev` and `next` as URLs for the previous and next page. The `prev` and `next` areas will be hidden if there is no previous or next page availible.
+
+Example pagination:
+```html
+@if($pagination)
+    @if($prev)
+        <a href="{{ $prev }}">&lt;Previous page</a>
+    @endif
+    @if ($next)
+        <a href="{{ $next }}">Next page &gt;</a>
+    @endif
+@endif
+```
+
 ## Theme watcher
 When developing themes it can get very annoying to regenerate static blog files on every change in the theme. To help with this work, Journal comes with a theme watcher. The theme watcher will watch for changes in your theme folder and automatically regenerate the static blog files.
 Journals theme watcher is build with Node.JS. You will first need to install its dependencies with
@@ -214,12 +261,12 @@ replacing `[theme name]` with the name of your themes folder.
 
 Theme watcher will now watch your folder and trigger a regeneration when a file changes. It is not required to change Journals theme to the developed theme - it will automatically be used for regeneration of static files when using the theme watcher.
 
+# Backing up
+Backuping up Journal is easy: Simply backup Journals `tables/`, `public/` and `themes/` folder. If something goes wrong, redownload Journal in the version you had installed and restore your backed-up folders.
+
 # Upcomming features
 These features are planned for the next versions of Journal
-- Menu settings for themes (=> Add custom links to menus)
-- More upload methods (ZIP Archive, WebDAV, Git)
-- Pagination support
+- More upload methods (ZIP Archive, WebDAV)
 
 # License
-
 Journal is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
