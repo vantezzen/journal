@@ -1,0 +1,22 @@
+* {
+    transition-duration: .5s;
+}
+
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.card {
+    border: 0;
+    border-radius: 0;
+    box-shadow: 0 0px 4px rgba(0,0,0,0.1);
+    margin-top: 30px;
+}
+
+.card:first-child {
+    margin-top: 0px;
+}
+.container-fluid {
+    padding-left: 0;
+    padding-right: 0;
+}

@@ -17,10 +17,6 @@ composer.lock
 core/cache/*
 !core/cache/.gitkeep
 
-# Ignore all themes exept default
-themes/*
-!themes/default
-
 # Other files
 direct.php
 .DS_Store
