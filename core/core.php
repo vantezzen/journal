@@ -78,7 +78,7 @@ class core {
      * @var array
      */
     public $settingsFallback = [
-        'theme' => 'default',
+        'theme' => 'journal',
         'title' => 'Journal',
         'description' => '',
         'url' => 'https://example.com',
