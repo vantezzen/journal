@@ -183,10 +183,11 @@ Example home.blade.php
 This file will be used to create pages for all posts.
 
 Additional variables availible in this view are:
-- $title : Title of the post. This should always be inserted unescaped as the title has already been escaped
-- $text : Full post text. This should always be inserted unescaped as the title has already been escaped
-- $path : Relative path to the post (e.g. my-post.html)
-- $comments : Code for comment section. This should always be inserted unescaped.
+- $post: Data for current post:
+    - ['title']: Title of the post. This should always be inserted unescaped as the title has already been escaped
+    - ['text']: Full post text. This should always be inserted unescaped as the title has already been escaped
+    - ['path']: Relative path to the post (e.g. my-post.html)
+    - ['comments']: Code for comment section. This should always be inserted unescaped.*
 
 *This will be replaced with the comments section of the chosen comment provider when generating static pages. 
 
@@ -195,10 +196,10 @@ Example post.blade.php
 @extends('base')
 
 @section('content')
-<h1>{!! $title !!}</h1>
-<p>{!! $text !!}</p>
+<h1>{!! $post['title'] !!}</h1>
+<p>{!! $post['text'] !!}</p>
 
-{!! $comments !!}
+{!! $post['comments'] !!}
 @endsection
 ```
 
