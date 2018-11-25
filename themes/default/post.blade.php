@@ -1,8 +1,8 @@
 @extends('base')
 
 @section('content')
-<h1>{!! $title !!}</h1>
-<p>{!! $text !!}</p>
+<h1>{!! $post['title'] !!}</h1>
+<p>{!! $post['text'] !!}</p>
 
-{!! $comments !!}
+{!! $post['comments'] !!}
 @endsection

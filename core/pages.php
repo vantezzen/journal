@@ -108,11 +108,15 @@ class pages {
         $post['text'] = $this->core->component('intelliformat')->format($post['text']);
 
         // Collect data for render
-        $data = array_merge($post, [
+        $post = array_merge($post, [
             'path' => $this->core->component('url')->get($post),
             'url' => $this->core->component('url')->getFull($post),
             'comments' => $this->core->component('comments')->generateCode($post)
         ]);
+
+        $data = [
+            'post' => $post
+        ];
 
         // Generate page
         $render = $this->core->component('generator')->render('post', $data);
