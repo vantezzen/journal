@@ -10,9 +10,7 @@
                 name="title" 
                 placeholder="Add a title for your post..." 
                 value="{{ $post_title }}">
-            <div id="text" class="text"></div>
-            <input type="hidden" name="text">
-            {{-- <textarea id="text" placeholder="Write your post..." name="text" class="text">{{ $post_text }}</textarea> --}}
+            <textarea id="text" placeholder="Write your post..." name="text" class="text">{{ $post_text }}</textarea>
             @if ($edit)
             <input type="hidden" name="edit" value="{{ $post_id }}">
             @endif
@@ -37,31 +35,6 @@
         </div>
     </div>
 
-    <script>
-    // Lock inputs on save and delete
-    document.addEventListener('DOMContentLoaded', function() {
-        $('#save-btn').click(function() {
-            $('#confirm-delete').prop('disabled', true);
-            $('#save-btn').prop('disabled', true);
-            $('#delete-btn').prop('disabled', true);
-            $('#text').prop('readonly', true);
-            $('#title').prop('readonly', true);
-    
-            $('#saving_screen').css('display', 'flex');
-    
-            return true;
-        });
-        $('#confirm-delete').click(function() {
-            $('#confirm-delete').prop('disabled', true);
-            $('#save-btn').prop('disabled', true);
-            $('#delete-btn').prop('disabled', true);
-            $('#text').prop('readonly', true);
-            $('#title').prop('readonly', true);
-            return true;
-        });
-    });
-    </script>
-    
     <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="deleteTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -76,7 +49,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-success" data-dismiss="modal">Cancel</button>
-                <form action="{{ $base }}/delete" method="post">
+                <form action="{{ $base }}/delete" method="post" id="delete_form">
                     <input type="hidden" name="delete" value="{{ $post_id }}">
                     <button type="submit" class="btn btn-outline-danger" id="confirm-delete">Delete</button>
                 </form>
@@ -86,15 +59,6 @@
         </div>
 @endsection
 
-@section('styles')
-    <link href="{{ $base }}/assets/css/quill.css" rel="stylesheet">    
-@endsection
-
 @section('scripts')
-    <script>
-        window.Journal.text = `{!! str_replace("`", "\\`", $post_text)  !!}`;
-    </script>
-    <script src="{{ $base }}/assets/js/intelliformat.js"></script>
-    <script src="{{ $base }}/assets/js/quill.js"></script>
     <script src="{{ $base }}/assets/js/write.js"></script>
 @endsection

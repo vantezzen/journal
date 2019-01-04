@@ -1,74 +1,4 @@
 
-var quill = new Quill('#text', {
-    modules: {
-        toolbar: false
-        // [
-        //     ['bold', 'italic', 'code'],
-        //     [
-        //         { 'header': '1' },
-        //         { 'header': '2' }
-        //     ]
-        // ]
-    },
-    placeholder: 'Write your post...',
-    theme: 'bubble'
-});
-
-// Insert text into Quill Editor
-if (window.Journal.text) {
-    quill.setText(window.Journal.text);
-
-    let lines = quill.getLines();
-    applyIntelliformat(lines, quill);
-}
-
-// Convert text on form submit
-$('#form').submit(function () {
-    let input = $('input[name=text]');
-    input.attr('value', quill.getText());
-
-    return true;
-});
-
-// Listen for Text changed to update auto-formatting
-quill.on('text-change', function (delta, oldDelta, source) {
-    if (source !== 'api' && window.localStorage.getItem('write.disable-autoformat') !== 'yes') {
-        let lines = quill.getLines();
-
-        applyIntelliformat(lines, quill);
-    }
-});
-
-// Enable and disable IntelliFormat
-function enableAutoformat() {
-    window.localStorage.removeItem('write.disable-autoformat', 'yes');
-
-    let lines = quill.getLines();
-    applyIntelliformat(lines, quill);
-
-    $('#toggle-autoformat').text('Disable Formatting Preview');
-}
-function disableAutoformat() {
-    window.localStorage.setItem('write.disable-autoformat', 'yes');
-    quill.removeFormat(0, quill.getLength());
-    $('#toggle-autoformat').text('Enable Formatting Preview');
-}
-function toggleAutoformat() {
-    if (window.localStorage.getItem('write.disable-autoformat') === 'yes') {
-        enableAutoformat();
-    } else {
-        disableAutoformat();
-    }
-}
-
-// Toggle on button click
-$('#toggle-autoformat').click(toggleAutoformat);
-
-// Check if already disabled
-if (window.localStorage.getItem('write.disable-autoformat') === 'yes') {
-    disableAutoformat();
-}
-
 // Publish post
 $('#publish-btn').click(function() {
     // Change action to also publish post
@@ -76,6 +6,32 @@ $('#publish-btn').click(function() {
     $('#form').attr('action', action);
 
     $('#form').submit();
+});
+
+// Lock inputs on save and delete
+document.addEventListener('DOMContentLoaded', function() {
+    $('#save-btn').click(function() {
+        $('#confirm-delete').prop('disabled', true);
+        $('#save-btn').prop('disabled', true);
+        $('#delete-btn').prop('disabled', true);
+        $('#text').prop('readonly', true);
+        $('#title').prop('readonly', true);
+
+        $('#saving_screen').css('display', 'flex');
+
+        $('#form').submit();
+
+        return true;
+    });
+    $('#confirm-delete').click(function() {
+        $('#confirm-delete').prop('disabled', true);
+        $('#save-btn').prop('disabled', true);
+        $('#delete-btn').prop('disabled', true);
+        $('#text').prop('readonly', true);
+        $('#title').prop('readonly', true);
+        $('#delete_form').submit();
+        return true;
+    });
 });
 
 
