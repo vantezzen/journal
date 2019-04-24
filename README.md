@@ -1,5 +1,10 @@
 <p align="center"><img src="assets/img/logo.png"></p>
 
+# Archived
+This project is no longer maintained and has been archived.
+
+I originally created this project for creating a small, static blog on my own website but as I removed this blog I no longer have any use for Journal.
+
 Table of Contents
 - [About Journal](#about-journal)
 - [Features](#features)
@@ -28,7 +33,6 @@ Table of Contents
         - [Pagination support](#pagination-support)
     - [Theme watcher](#theme-watcher)
 - [Backing up](#backing-up)
-- [Upcomming features](#upcomming-features)
 - [License](#license)
 
 # About Journal
@@ -264,10 +268,6 @@ Theme watcher will now watch your folder and trigger a regeneration when a file 
 
 # Backing up
 Backuping up Journal is easy: Simply backup Journals `tables/`, `public/` and `themes/` folder. If something goes wrong, redownload Journal in the version you had installed and restore your backed-up folders.
-
-# Upcomming features
-These features are planned for the next versions of Journal
-- More upload methods (ZIP Archive, WebDAV)
 
 # License
 Journal is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
